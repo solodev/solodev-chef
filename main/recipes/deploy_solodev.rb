@@ -60,11 +60,5 @@ script "install_software" do
 		
 		service httpd start
 		
-		echo "php #{document_root}/#{software_name}/core/update.php #{ADMINUSER} #{ADMINPASSWORD}" >> /root/phpinstall.log
-		php #{document_root}/#{software_name}/core/update.php #{ADMINUSER} #{ADMINPASSWORD} #{WEBSITE} #{THEME} >> /root/phpinstall.log
-		
-		#chown -Rf apache.apache #{document_root}/#{software_name}/clients
-		#chmod -Rf 2770 #{document_root}/#{software_name}/clients
-		
 	EOH
 end
