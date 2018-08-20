@@ -1,13 +1,12 @@
 conf_available_dir = node[:apache][:conf_available_dir]
 
 node[:deploy].each do |app_name, deploy|
-	
 	#Base Server Setup
 	script "base_setup" do
 		not_if { ::File.exists?("/root/mkswap.txt") }
-	  interpreter "bash"
-	  user "root"
-	  cwd "/root"
+		interpreter "bash"
+		user "root"
+		cwd "/root"
 	  code <<-EOH
 			
 			chkconfig ntpd on
@@ -22,6 +21,4 @@ node[:deploy].each do |app_name, deploy|
 			/sbin/swapon /mnt/swapfile
 			
 	  EOH
-	end
-
 end
