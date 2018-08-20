@@ -28,15 +28,3 @@ script "mongo_brick" do
 
 	EOH
 end
-
-script "mongo_service" do
-  interpreter "bash"
-  user "root"
-  cwd "/root"
-  code <<-EOH
-		
-    chkconfig mongod on
-		service mongod start
-
-	EOH
-end
