@@ -4,7 +4,6 @@ version: 0.2
 phases:
   build:
     commands:
-      - yum install -y tar wget unzip sudo
       - curl -qL -o jq https://stedolan.github.io/jq/download/linux64/jq && chmod +x ./jq
       - curl -O https://bootstrap.pypa.io/get-pip.py
       - python get-pip.py
@@ -15,10 +14,10 @@ phases:
       - aws configure set aws_access_key_id `./jq -r '.AccessKeyId' aws_credentials.json`
       - aws configure set aws_secret_access_key `./jq -r '.SecretAccessKey' aws_credentials.json`
       - aws configure set aws_session_token `./jq -r '.Token' aws_credentials.json`
-      - cd chef && ls -al
-      - sudo chmod 700 *.sh
-      - sudo ./initChef.sh
-      - sudo ./package.sh
+      - ls -al
+      - chmod 700 *.sh
+      - ./initChef.sh
+      - ./package.sh
   post_build:
     commands:
       - echo "Chef recipes packaged on `date`"
