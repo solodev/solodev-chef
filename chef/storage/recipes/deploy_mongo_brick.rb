@@ -26,11 +26,6 @@ script "mongo_brick" do
     chown -Rf mongod:mongod /mongo
     chown -Rv mongod:mongod /var/lib/mongo
 
-    chkconfig mongod on
-		service mongod start
-		service mongod status
-
-
 	EOH
 end
 
@@ -42,7 +37,6 @@ script "mongo_service" do
 		
     chkconfig mongod on
 		service mongod start
-		service mongod status
 
 	EOH
 end
