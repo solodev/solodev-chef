@@ -7,18 +7,16 @@ node[:deploy].each do |app_name, deploy|
 		interpreter "bash"
 		user "root"
 		cwd "/root"
-	  code <<-EOH
-			
+		code <<-EOH
 			chkconfig ntpd on
 			service ntpd start
 			
 			# Add Swap
 			touch /root/mkswap.txt
-      /bin/dd if=/dev/zero of=/mnt/swapfile bs=1M count=2048
+			/bin/dd if=/dev/zero of=/mnt/swapfile bs=1M count=2048
 			chown root:root /mnt/swapfile
 			chmod 600 /mnt/swapfile
 			/sbin/mkswap /mnt/swapfile
 			/sbin/swapon /mnt/swapfile
-			
 	  EOH
 end
