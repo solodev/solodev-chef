@@ -11,6 +11,14 @@ BrickName = node[:install][:client_name]
 mongo_nodes = node[:install][:mongo_nodes]
 control_root = node[:install][:control_root]
 
+template 'heal_mongo.sh' do
+	path "/root/heal_mongo.sh"
+	source 'heal_mongo.sh.erb'
+	owner 'root'
+	group 'root'
+	mode 0700
+end
+
 #Install Software
 script "heal_mongo" do
   interpreter "bash"

@@ -1,11 +1,3 @@
-template 'mongod.conf' do
-  path "/etc/mongod.conf"
-  source 'mongod.conf.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-end
-
 script "mongo_brick" do
 	not_if { ::File.exists?("/mongo/data/journal") }
   interpreter "bash"
