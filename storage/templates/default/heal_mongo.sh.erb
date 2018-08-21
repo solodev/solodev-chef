@@ -17,7 +17,7 @@ in_array() {
     return 1
 }
 
-SETNAME=$(echo "rs.status()"| mongo | egrep "set" | awk -F \" '{print $4}'| cut -f 1 -d :)
+#SETNAME=$(echo "rs.status()"| mongo | egrep "set" | awk -F \" '{print $4}'| cut -f 1 -d :)
 
 #Check amazon for current storage hosts
 AWSHOSTS=$(aws ec2 describe-instances --region $REGION --filter Name=tag-key,Values='opsworks:layer:<%= node[:install][:client_name] %>-storage' Name=tag-value,Values=$STACKNAME-SolodevStorage --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
@@ -88,7 +88,7 @@ done
 
 rm -Rf /root/mongoconfig.js
 echo -ne "config = {" >> /root/mongoconfig.js
-echo -ne "\"_id\" : \"$SETNAME\", " >> /root/mongoconfig.js
+echo -ne "\"_id\" : \"$STACKNAME\", " >> /root/mongoconfig.js
 echo -ne "\"members\" : [" >> /root/mongoconfig.js
 REPLICACOUNT=0
 #Loop through available replicas and reconfigure mongo replica group

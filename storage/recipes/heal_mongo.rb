@@ -39,7 +39,7 @@ script "heal_mongo" do
 	    return 1
 	}
 
-	SETNAME=$(echo 'rs.status()'| mongo | egrep "set" | awk -F \\" '{print $4}'| cut -f 1 -d :)
+	#SETNAME=$(echo 'rs.status()'| mongo | egrep "set" | awk -F \\" '{print $4}'| cut -f 1 -d :)
 
 	#Add buffer to wait for servers to go out of service.
 	sleep 50
@@ -130,7 +130,7 @@ script "heal_mongo" do
 
 	rm -Rf /root/mongoconfig.js
 	echo -ne 'config = {' > /root/mongoconfig.js
-	echo -ne '"_id" : "'$SETNAME'", ' >> /root/mongoconfig.js
+	echo -ne '"_id" : "'#{StackName}'", ' >> /root/mongoconfig.js
 	echo -ne '"members" : [' >> /root/mongoconfig.js
 	REPLICACOUNT=0
 	#Loop through available replicas and reconfigure mongo replica group
