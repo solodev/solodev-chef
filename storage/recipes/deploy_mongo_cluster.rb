@@ -12,7 +12,6 @@ script "configure_mongo" do
 	cwd "/root"
 	code <<-EOH
 	
-		my_string.to_s == ''
 		if [-z "#{mongo_nodes}"]; then
 			aws ec2 describe-instances --region #{Region} --filter Name=tag-key,Values='opsworks:layer:#{client_name}-storage' Name=tag-value,Values='#{StackName}-SolodevStorage' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > /storagehosts
 		else
@@ -44,10 +43,10 @@ script "configure_mongo" do
 		echo 'db.createUser({"user": "#{DBUSER}", "pwd": "#{DBPASSWORD}", "roles": [ { role: "readWrite", db: "#{client_name}_views" } ] })' >> /root/mongouser.js 
 		mongo --host ${hosts[0]} < /root/mongouser.js
 		rm -Rf /root/mongouser.js
-		#echo "" > /root/mongouser.js
 
 		service mongod stop
 		service mongod start
 				
 	EOH
+	flags "-x"
 end
