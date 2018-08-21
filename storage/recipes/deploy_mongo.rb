@@ -21,22 +21,3 @@ template 'mongod.conf' do
   group 'root'
   mode 0644
 end
-
-#Install Mongo
-script "install_mongo" do
-	not_if { ::File.exists?('/mongo/data/journal') }
-  interpreter "bash"
-  user "root"
-  cwd "/root"
-  code <<-EOH 
-  
-    yum install -y mongodb-org
-    mkdir -p /mongo/data/journal /mongo/log
-    mkdir -p /mongo/data/arb
-    chown -Rf mongod:mongod /mongo
-    chown -Rv mongod:mongod /var/lib/mongo
-    chkconfig mongod on
-		service mongod start
-        
-  EOH
-end
