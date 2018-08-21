@@ -12,11 +12,7 @@ script "configure_mongo" do
 	cwd "/root"
 	code <<-EOH
 	
-		if [-z "#{mongo_nodes}"]; then
-			aws ec2 describe-instances --region #{Region} --filter Name=tag-key,Values='opsworks:layer:#{client_name}-storage' Name=tag-value,Values='#{StackName}-SolodevStorage' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > /storagehosts
-		else
-			aws ec2 describe-instances --region #{Region} --filter Name=tag-key,Values='opsworks:layer:#{client_name}-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > /storagehosts
-		fi
+		aws ec2 describe-instances --region #{Region} --filter Name=tag-key,Values='opsworks:layer:#{client_name}-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > /storagehosts
 
 		MASTER=$(wget -O- -q http://169.254.169.254/latest/meta-data/local-ipv4)
 		declare -i i=0
@@ -25,11 +21,9 @@ script "configure_mongo" do
 		let i++
 		done < /storagehosts
 
-		#echo '${hosts[@]}'
 		echo 'rs.initiate()' | mongo --host ${hosts[0]}
 		sleep 60
 
-		#echo 'rs.addArb("'$MASTER'")' 
 		echo 'rs.add("'${hosts[1]}'")' | mongo --host ${hosts[0]}
 		echo 'rs.addArb("'$MASTER'")' | mongo --host ${hosts[0]}
 		echo 'rs.status()' | mongo --host ${hosts[0]}
