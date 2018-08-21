@@ -10,13 +10,9 @@ script "mongo_brick" do
     
     #Make Mongo Node
     mkfs.ext4 /dev/sdm
-    mkdir -p /mongo
     echo '/dev/sdm /mongo ext4 defaults,auto,noexec 0 0' >> /etc/fstab
     mount -a
-    mkdir -p /mongo/data/journal /mongo/log
     blockdev --setra 32 /dev/sdm
-    chown -Rf mongod:mongod /mongo
-    chown -Rv mongod:mongod /var/lib/mongo
 
 	EOH
 end

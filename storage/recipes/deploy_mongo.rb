@@ -31,18 +31,12 @@ script "install_mongo" do
   code <<-EOH 
   
     yum install -y mongodb-org
-    
-    chkconfig mongod on
-		service mongod status
-		mongo --eval "db.getSiblingDB('admin').shutdownServer()"
-		
     mkdir -p /mongo/data/journal /mongo/log
     mkdir -p /mongo/data/arb
     chown -Rf mongod:mongod /mongo
     chown -Rv mongod:mongod /var/lib/mongo
-    
+    chkconfig mongod on
 		service mongod start
-		sleep 20
         
   EOH
 end
