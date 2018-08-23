@@ -26,7 +26,7 @@ directory '/mongo/data' do
 	not_if do ::File.exists?("/mongo/data") end
   owner 'mongod'
   group 'mongod'
-  mode '0755'
+  mode '0770'
   recursive true
   ignore_failure true
   action :create
@@ -36,7 +36,7 @@ directory '/mongo/log' do
 	not_if do ::File.exists?("/mongo/log") end
   owner 'mongod'
   group 'mongod'
-  mode '0755'
+  mode '0770'
   recursive true
   ignore_failure true
   action :create
