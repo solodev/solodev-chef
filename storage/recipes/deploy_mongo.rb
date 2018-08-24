@@ -41,3 +41,22 @@ directory '/mongo/log' do
   ignore_failure true
   action :create
 end
+
+#Init Mongo
+script "init_mongo" do
+	not_if { ::File.exists?('/mongo/data/journal') }
+  interpreter "bash"
+  user "root"
+  cwd "/root"
+  code <<-EOH 
+  
+		service mongod status
+    mongo --eval "db.getSiblingDB('admin').shutdownServer()"
+    service mongod stop
+		
+		service mongod start
+		service mongod status
+		sleep 20
+        
+  EOH
+end

@@ -1,0 +1,5 @@
+#!/bin/sh
+sudo rm /mongo/data/mongod.lock
+sudo mongod -f /etc/mongod.conf --repair
+sudo service mongod start
+chown -R mongod:mongod /var/lib/mongod
