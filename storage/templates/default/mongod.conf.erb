@@ -1,8 +1,7 @@
-# MongoDB config
-dbpath=/mongo/data
-pidfilepath = /var/run/mongodb/mongod.pid
-smallfiles = true
-
+storage:
+  dbPath: /mongo/data
+  journal:
+    enabled: true
 systemLog:
    destination: file
    path: "/var/log/mongodb/mongod.log"
