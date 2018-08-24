@@ -1,8 +1,18 @@
 # MongoDB config
 dbpath=/mongo/data
-logpath=/mongo/log/mongod.log
 pidfilepath = /var/run/mongodb/mongod.pid
-logappend=true
-replSet=<%= node[:install][:StackName] %>
 smallfiles = true
-bind_ip = 0.0.0.0
+
+systemLog:
+   destination: file
+   path: "/var/log/mongodb/mongod.log"
+   logAppend: true
+storage:
+   journal:
+      enabled: true
+processManagement:
+   fork: true
+replication:
+   replSetName: <%= node[:install][:StackName] %>
+net:
+   bindIp: localhost,0.0.0.0
