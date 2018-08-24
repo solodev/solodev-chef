@@ -49,14 +49,13 @@ script "init_mongo" do
   user "root"
   cwd "/root"
   code <<-EOH 
-  
-		service mongod status
-    mongo --eval "db.getSiblingDB('admin').shutdownServer()"
+    echo "Try to stop Mongo to load new configs"
     service mongod stop
-		
-		service mongod start
-		service mongod status
-		sleep 20
-        
+    sleep 5
+	  echo "Try to start Mongo"
+	  service mongod start
+    echo "Mongo started"
+	  service mongod status
+	  sleep 10
   EOH
 end
