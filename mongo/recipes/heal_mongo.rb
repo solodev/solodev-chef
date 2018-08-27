@@ -39,20 +39,12 @@ script "heal_mongo" do
 	    return 1
 	}
 
-	#SETNAME=$(echo 'rs.status()'| mongo | egrep "set" | awk -F \\" '{print $4}'| cut -f 1 -d :)
-
 	#Add buffer to wait for servers to go out of service.
 	sleep 50
 
 	AWSHOSTS=$(aws ec2 describe-instances --region #{Region} --filter Name=instance-state-name,Values=running Name=tag-key,Values='opsworks:layer:#{BrickName}-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
-	echo "aws ec2 describe-instances --region #{Region} --filter Name=instance-state-name,Values=running Name=tag-key,Values='opsworks:layer:#{BrickName}-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text"  >> /mongolog.txt
-	aws ec2 describe-instances --region #{Region} --filter Name=instance-state-name,Values=running Name=tag-key,Values='opsworks:layer:#{BrickName}-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > /storagehosts
-
-	#Copy hosts to mongo file
-	echo "cp -f /storagehosts #{control_root}/mongohosts.txt"  >> /mongolog.txt
-	cp -f /storagehosts #{control_root}/mongohosts.txt
+	aws ec2 describe-instances --region #{Region} --filter Name=instance-state-name,Values=running Name=tag-key,Values='opsworks:layer:#{BrickName}-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > #{control_root}/mongohosts.txt
 	echo "#{StackName}" > #{control_root}/stackname.txt
-	echo $SETNAME > #{control_root}/SETNAME.txt
 
 	#Loop through status and get ids
 	IDS=()

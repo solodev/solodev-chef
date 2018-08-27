@@ -19,7 +19,7 @@ script "configure_mongo" do
 		while read host; do
 		hosts[i]="$host"
 		let i++
-		done < /storagehosts
+		done
 
 		echo 'rs.initiate()' | mongo --host ${hosts[0]}
 		sleep 60
