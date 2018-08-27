@@ -1,1 +1,1 @@
-name 'storage'
+name 'mongo'
