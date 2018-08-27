@@ -8,7 +8,8 @@ systemLog:
    logAppend: true
 processManagement:
    fork: true
+   pidFilePath: "/var/run/mongodb/mongod.pid"
 replication:
    replSetName: <%= node[:install][:StackName] %>
 net:
-   bindIp: localhost,0.0.0.0
+   bindIp: 0.0.0.0

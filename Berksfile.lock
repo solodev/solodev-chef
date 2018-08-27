@@ -1,13 +1,13 @@
 DEPENDENCIES
-  main
-    path: main
+  solodev
+    path: solodev
   solodev_opsworks
     path: .
     metadata: true
-  storage
-    path: storage
+  mongo
+    path: mongo
 
 GRAPH
-  main (0.0.0)
+  solodev (0.0.0)
   solodev_opsworks (0.0.0)
-  storage (0.0.0)
+  mongo (0.0.0)

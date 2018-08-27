@@ -32,16 +32,6 @@ directory '/mongo/data' do
   action :create
 end
 
-directory '/mongo/log' do
-	not_if do ::File.exists?("/mongo/log") end
-  owner 'mongod'
-  group 'mongod'
-  mode '0770'
-  recursive true
-  ignore_failure true
-  action :create
-end
-
 #Init Mongo
 script "init_mongo" do
 	not_if { ::File.exists?('/mongo/data/journal') }
