@@ -13,7 +13,6 @@ script "backup_software" do
 	user "root"
 	cwd "/root"
 	code <<-EOH
-
 		rm -Rf #{document_root}/#{software_name}/old
 		mkdir "#{document_root}/#{software_name}/old"
 		mv #{document_root}/#{software_name}/modules #{document_root}/#{software_name}/old/
@@ -22,7 +21,6 @@ script "backup_software" do
 		mv #{document_root}/#{software_name}/composer.json #{document_root}/#{software_name}/old/
 		mv #{document_root}/#{software_name}/composer.lock #{document_root}/#{software_name}/old/
 		rm -Rf #{document_root}/#{software_name}/license.php
-
 	EOH
 end
 
@@ -33,12 +31,12 @@ script "install_software" do
   cwd "/root"
   code <<-EOH
   
-  	#Make sure default html folder exists.  This will not be used.
-  	mkdir -p #{document_root}/html
-  	mkdir -p #{document_root}/#{software_name}
-  
-  	#Install Solodev CMS
-	  	mkdir -p /root/Solodev
+		#Make sure default html folder exists.  This will not be used.
+		mkdir -p #{document_root}/html
+		mkdir -p #{document_root}/#{software_name}
+	
+		#Install Solodev CMS
+		mkdir -p /root/Solodev
 		fn="$(aws s3 ls s3://solodev-release | sort | tail -n 1 | awk '{print \$4}')"
 		aws s3 cp s3://solodev-release/$fn /root/Solodev/Solodev.zip
 		cd /root/Solodev
