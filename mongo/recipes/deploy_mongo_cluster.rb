@@ -6,7 +6,7 @@ client_name = node[:install][:client_name]
 mongo_nodes = node[:install][:mongo_nodes]	
 
 script "configure_mongo" do
-	not_if { ::File.exists?("/root/initmongo.txt") }
+	not_if { ::File.exists?("/root/mongo.lock") }
 	interpreter "bash"
 	user "root"
 	cwd "/root"
@@ -29,7 +29,7 @@ script "configure_mongo" do
 		echo 'rs.status()' | mongo --host ${hosts[0]}
 		sleep 20
 
-		touch /root/initmongo.txt
+		touch /root/mongo.lock
 		echo 'cfg = rs.conf()' >> /root/mongouser.js
 		echo 'cfg.members[0].host = "'${hosts[0]}':27017"' >> /root/mongouser.js
 		echo 'rs.reconfig(cfg)' >> /root/mongouser.js

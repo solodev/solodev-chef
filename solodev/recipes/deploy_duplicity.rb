@@ -16,28 +16,18 @@ DBHOST = node[:install][:DBHOST]
 DBUSER = node[:install][:DBUSER]
 DBPASSWORD = node[:install][:DBPASSWORD]
 
-if node[:hostname].include? "storage-control"
-	if mongo_nodes.to_s == ''
-		mount_path = "/mnt/glusterfs/#{VolumeName}"
-	else
-		mount_path = "#{document_root}/#{software_name}/clients/#{client_name}"
-	end
-	storage_control = 1
-else
-	mount_path = "#{document_root}/#{software_name}/clients/#{client_name}"
-	storage_control = 0
-end
+mount_path = "#{document_root}/#{software_name}/clients/#{client_name}"
 
 Chef::Log.info(mount_path)
 
 script "install_mysqldump" do
 	not_if { ::File.exists?("/root/dumpmysql.sh") }
-  interpreter "bash"
-  user "root"
-  cwd "/root"
-  code <<-EOH
-  
-	  echo "#!/bin/bash" > /root/dumpmysql.sh
+	interpreter "bash"
+	user "root"
+	cwd "/root"
+	code <<-EOH
+
+		echo "#!/bin/bash" > /root/dumpmysql.sh
 		echo "# Example root cronjob:" >> /root/dumpmysql.sh
 		echo "# 0 5 * * * /root/dumpmysql.sh >/dev/null 2>&1" >> /root/dumpmysql.sh
 		echo "# 1 day backup" >> /root/dumpmysql.sh
@@ -50,32 +40,30 @@ script "install_mysqldump" do
 		echo 'for i in `cat $DBFILE` ; do mysqldump --opt --single-transaction -h #{DBHOST} -u #{DBUSER} -p#{DBPASSWORD} $i > $PWD/$i.sql ; done' >> /root/dumpmysql.sh
 		echo "# Compress Backups" >> /root/dumpmysql.sh
 		echo 'for i in `cat $DBFILE` ; do gzip -f $PWD/$i.sql ; done' >> /root/dumpmysql.sh
-		
 		chmod 700 /root/dumpmysql.sh
-	
 		echo #{StackName} >> /root/stack.txt
 		echo #{Region} >> /root/region.txt
-  
+
 	EOH
 end
 
 template 'duply_backups.sh' do
 	not_if { ::File.exists?("/usr/bin/duply_backups.sh") }
-  path "/usr/bin/duply_backups.sh"
-  action :create
-  source 'duply_backups.sh.erb'
-  mode '0755'
+	path "/usr/bin/duply_backups.sh"
+	action :create
+	source 'duply_backups.sh.erb'
+	mode '0755'
 end
 
 script "install_duplicity" do
 	not_if { ::File.exists?("/root/restore.sh") }
-  interpreter "bash"
-  user "root"
-  cwd "/root"
-  code <<-EOH
+	interpreter "bash"
+	user "root"
+	cwd "/root"
+	code <<-EOH
 		
 		# Install Duplicy Filesystem Backups
-    yum install -y duplicity duply python-boto mysql --enablerepo=epel
+		yum install -y duplicity duply python-boto mysql --enablerepo=epel
 				
 		duply backup create
 		perl -pi -e 's/GPG_KEY/#GPG_KEY/g' /etc/duply/backup/conf
@@ -92,7 +80,6 @@ script "install_duplicity" do
 		echo 'DUPL_PARAMS="$DUPL_PARAMS --volsize $VOLSIZE"' >> /etc/duply/backup/conf
 		echo 'DUPL_PARAMS="$DUPL_PARAMS --full-if-older-than $MAX_FULLBKP_AGE"' >> /etc/duply/backup/conf
 				
-				
 		#Restore Script
 		echo "#!/bin/bash" >> /root/restore.sh
 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/restore.sh
@@ -102,11 +89,8 @@ script "install_duplicity" do
 		echo "chmod -Rf 2770 #{mount_path}" >> /root/restore.sh
 		echo "chown -Rf apache.apache #{mount_path}" >> /root/restore.sh
 		echo "gunzip < #{mount_path}/dbdumps/#{DBName}.sql.gz | mysql -h #{DBHOST} -u #{DBUSER} -p#{DBPASSWORD} #{DBName}" >> /root/restore.sh
-		if((#{storage_control} == 1)); then
-			echo "mongorestore --host `mongo --quiet --eval \"db.isMaster()['primary']\"` #{mount_path}/mongodumps" >> /root/restore.sh
-		else 
-			echo "mongorestore #{mount_path}/mongodumps" >> /root/restore.sh
-		fi
+		echo "mongorestore --host `mongo --quiet --eval \"db.isMaster()['primary']\"` #{mount_path}/mongodumps" >> /root/restore.sh
+		#echo "mongorestore #{mount_path}/mongodumps" >> /root/restore.sh
 		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /root/restore.sh
 		chmod 700 /root/restore.sh
 		
@@ -115,24 +99,19 @@ script "install_duplicity" do
 		mkdir -p #{mount_path}/mongodumps
 				
 		echo "/root/dumpmysql.sh >/dev/null 2>&1" >> /etc/duply/backup/pre
-		if((#{storage_control} == 1)); then
-		 echo "mongodump --host `mongo --quiet --eval \"db.isMaster()['primary']\"` --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
-		else 
-			echo "mongodump --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
-		fi
+		echo "mongodump --host `mongo --quiet --eval \"db.isMaster()['primary']\"` --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
+		#echo "mongodump --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /etc/duply/backup/pre
 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /etc/duply/backup/pre
-		
 		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /etc/duply/backup/post
 
-		echo "30 3 * * 1-6 /usr/bin/duply_backups.sh backup backup" >> /root/crontab.txt
-		echo "30 13 * * * /usr/bin/duply_backups.sh backup backup" >> /root/crontab.txt
-		echo "30 3 * * 0 /usr/bin/duply_backups.sh backup full_purge --force" >> /root/crontab.txt
+		echo "30 3 * * 1-6 duply backup backup" >> /root/crontab.txt
+		echo "30 13 * * * duply backup backup" >> /root/crontab.txt
+		echo "30 3 * * 0 duply backup full_purge --force" >> /root/crontab.txt
+		crontab crontab.txt		
 
 		echo "duply backup backup" >> /root/backup.sh
-		chmod 700 /root/backup.sh
-				
-		crontab crontab.txt			
+		chmod 700 /root/backup.sh		
 		
 	EOH
 end
