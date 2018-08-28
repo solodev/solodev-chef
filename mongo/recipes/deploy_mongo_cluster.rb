@@ -21,12 +21,13 @@ script "configure_mongo" do
 		let i++
 		done
 
-		echo 'rs.initiate()' | mongo --host ${hosts[0]}
+		echo "Deploy Mongo Cluster" > /root/mongo-init.log
+		echo 'rs.initiate()' | mongo --host ${hosts[0]} >> /root/mongo-init.log
 		sleep 60
 
-		echo 'rs.add("'${hosts[1]}'")' | mongo --host ${hosts[0]}
-		echo 'rs.addArb("'$MASTER'")' | mongo --host ${hosts[0]}
-		echo 'rs.status()' | mongo --host ${hosts[0]}
+		echo 'rs.add("'${hosts[1]}'")' | mongo --host ${hosts[0]} >> /root/mongo-init.log
+		echo 'rs.addArb("'$MASTER'")' | mongo --host ${hosts[0]} >> /root/mongo-init.log
+		echo 'rs.status()' | mongo --host ${hosts[0]} >> /root/mongo-init.log
 		sleep 20
 
 		touch /root/mongo.lock
@@ -37,7 +38,7 @@ script "configure_mongo" do
 		echo 'rs.slaveOk()' >> /root/mongoconfig.js
 		echo 'use #{client_name}_views;' >> /root/mongouser.js
 		echo 'db.createUser({"user": "#{DBUSER}", "pwd": "#{DBPASSWORD}", "roles": [ { role: "readWrite", db: "#{client_name}_views" } ] })' >> /root/mongouser.js 
-		mongo --host ${hosts[0]} < /root/mongouser.js
+		mongo --host ${hosts[0]} < /root/mongouser.js >> /root/mongo-init.log
 		rm -Rf /root/mongouser.js
 
 		service mongod stop

@@ -36,6 +36,7 @@ script "heal_mongo" do
 	}
 
 	#Add buffer to wait for servers to go out of service.
+	echo "Heal Mongo Cluster" >> /root/mongo-init.log
 	sleep 50
 
 	AWSHOSTS=$(aws ec2 describe-instances --region #{Region} --filter Name=instance-state-name,Values=running Name=tag-key,Values='opsworks:layer:#{BrickName}-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
@@ -138,7 +139,7 @@ script "heal_mongo" do
 	echo 'rs.slaveOk()' >> /root/mongoconfig.js
 
 	if [ $BADHOSTS ] || [ $ADDHOSTS ]; then 
-		mongo --host $MONGOHOST < /root/mongoconfig.js
+		mongo --host $MONGOHOST < /root/mongoconfig.js >> /root/mongo-init.log
 	fi
 
 	service mongod stop
