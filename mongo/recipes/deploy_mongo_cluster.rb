@@ -32,7 +32,9 @@ script "configure_mongo" do
 		touch /root/mongo.lock
 		echo 'cfg = rs.conf()' >> /root/mongouser.js
 		echo 'cfg.members[0].host = "'${hosts[0]}':27017"' >> /root/mongouser.js
+		echo 'cfg.protocolVersion=1;' >> /root/mongoconfig.js
 		echo 'rs.reconfig(cfg)' >> /root/mongouser.js
+		echo 'rs.slaveOk()' >> /root/mongoconfig.js
 		echo 'use #{client_name}_views;' >> /root/mongouser.js
 		echo 'db.createUser({"user": "#{DBUSER}", "pwd": "#{DBPASSWORD}", "roles": [ { role: "readWrite", db: "#{client_name}_views" } ] })' >> /root/mongouser.js 
 		mongo --host ${hosts[0]} < /root/mongouser.js

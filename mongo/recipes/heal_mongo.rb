@@ -134,8 +134,8 @@ script "heal_mongo" do
 	echo -ne ']' >> /root/mongoconfig.js
 	echo '}' >> /root/mongoconfig.js
 	echo 'config.protocolVersion=1;' >> /root/mongoconfig.js
-	echo 'rs.slaveOk()' >> /root/mongoconfig.js
 	echo 'rs.reconfig(config, {force : true})' >> /root/mongoconfig.js
+	echo 'rs.slaveOk()' >> /root/mongoconfig.js
 
 	if [ $BADHOSTS ] || [ $ADDHOSTS ]; then 
 		mongo --host $MONGOHOST < /root/mongoconfig.js
