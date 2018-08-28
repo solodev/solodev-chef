@@ -1,3 +1,4 @@
+Chef::Log.level = :debug
 REPLICAS=()
 ARBITERS=()
 BADHOSTS=()

@@ -1,3 +1,4 @@
+Chef::Log.level = :debug
 Region = node[:install][:Region]
 StackName = node[:install][:StackName]
 DBUSER = node[:install][:DBUSER]
@@ -21,9 +22,9 @@ script "configure_mongo" do
 		let i++
 		done
 
-		echo "Deploy Mongo Cluster" > /root/mongo-init.log
+		echo 'Deploy Mongo Cluster' > /root/mongo-init.log
 		echo 'rs.initiate()' | mongo --host ${hosts[0]} >> /root/mongo-init.log
-		sleep 60
+		sleep 20
 
 		echo 'rs.add("'${hosts[1]}'")' | mongo --host ${hosts[0]} >> /root/mongo-init.log
 		echo 'rs.addArb("'$MASTER'")' | mongo --host ${hosts[0]} >> /root/mongo-init.log
