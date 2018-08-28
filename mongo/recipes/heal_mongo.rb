@@ -140,7 +140,7 @@ script "heal_mongo" do
 	echo 'rs.slaveOk()' >> /root/mongoconfig.js
 
 	if [ $BADHOSTS ] || [ $ADDHOSTS ]; then 
-		mongo --host $MONGOHOST < /root/mongoconfig.js >> /root/mongo-init.log
+		mongo --host $MONGOHOST < /root/mongoconfig.js &>> /root/mongo-init.log
 	fi
 
 	service mongod stop
