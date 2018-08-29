@@ -1,10 +1,9 @@
-Chef::Log.level = :debug
 Region = node[:install][:Region]
 StackName = node[:install][:StackName]
 DBUSER = node[:install][:DBUSER]
 DBPASSWORD = node[:install][:DBPASSWORD]
-client_name = node[:install][:client_name]
-mongo_nodes = node[:install][:mongo_nodes]	
+mongo_nodes = node[:install][:mongo_nodes]
+control_root = node[:install][:control_root]
 
 script "configure_mongo" do
 	not_if { ::File.exists?("/root/mongo.lock") }
@@ -13,14 +12,14 @@ script "configure_mongo" do
 	cwd "/root"
 	code <<-EOH
 	
-		aws ec2 describe-instances --region #{Region} --filter Name=tag-key,Values='opsworks:layer:#{client_name}-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > /storagehosts
+		aws ec2 describe-instances --region #{Region} --filter Name=tag-key,Values='opsworks:layer:solodev-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > #{control_root}/mongohosts.txt
 
 		MASTER=$(wget -O- -q http://169.254.169.254/latest/meta-data/local-ipv4)
 		declare -i i=0
 		while read host; do
 		hosts[i]="$host"
 		let i++
-		done
+		done < #{control_root}/mongohosts.txt
 
 		echo 'Deploy Mongo Cluster' > /root/mongo-init.log
 		echo 'rs.initiate()' | mongo --host ${hosts[0]} &>> /root/mongo-init.log
@@ -37,8 +36,8 @@ script "configure_mongo" do
 		echo 'cfg.protocolVersion=1;' >> /root/mongoconfig.js
 		echo 'rs.reconfig(cfg)' >> /root/mongouser.js
 		echo 'rs.slaveOk()' >> /root/mongoconfig.js
-		echo 'use #{client_name}_views;' >> /root/mongouser.js
-		echo 'db.createUser({"user": "#{DBUSER}", "pwd": "#{DBPASSWORD}", "roles": [ { role: "readWrite", db: "#{client_name}_views" } ] })' >> /root/mongouser.js 
+		echo 'use solodev_views;' >> /root/mongouser.js
+		echo 'db.createUser({"user": "#{DBUSER}", "pwd": "#{DBPASSWORD}", "roles": [ { role: "readWrite", db: "solodev_views" } ] })' >> /root/mongouser.js 
 		mongo --host ${hosts[0]} < /root/mongouser.js &>> /root/mongo-init.log
 		rm -Rf /root/mongouser.js
 
