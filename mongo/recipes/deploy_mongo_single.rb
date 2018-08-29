@@ -1,6 +1,5 @@
 DBUSER = node[:install][:DBUSER]
 DBPASSWORD = node[:install][:DBPASSWORD]
-client_name = node[:install][:client_name]	  
 
 script "mongo_user" do
 	not_if { ::File.exists?('/root/initmongo.txt') }
@@ -10,10 +9,11 @@ script "mongo_user" do
   code <<-EOH
 
 		touch /root/initmongo.txt
-		echo 'use #{client_name}_views;' >> /root/mongouser.js
-		echo 'db.createUser({"user": "#{DBUSER}", "pwd": "#{DBPASSWORD}", "roles": [ { role: "readWrite", db: "#{client_name}_views" } ] })' >> /root/mongouser.js 
-		mongo < /root/mongouser.js
-		rm -Rf /root/mongouser.js
+		echo 'rs.initiate();' >> /root/initmongo.js
+		echo 'use solodev_views;' >> /root/initmongo.js
+		echo 'db.createUser({"user": "#{DBUSER}", "pwd": "#{DBPASSWORD}", "roles": [ { role: "readWrite", db: "solodev_views" } ] })' >> /root/initmongo.js 
+		mongo < /root/initmongo.js
+		rm -Rf /root/initmongo.js
 		
 	EOH
 end
