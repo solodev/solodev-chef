@@ -4,9 +4,10 @@ ARBITERS=()
 BADHOSTS=()
 StackName = node[:install][:StackName]
 Region = node[:install][:Region]
-BrickName = node[:install][:client_name]
-mongo_nodes = node[:install][:mongo_nodes]
-control_root = node[:install][:control_root]
+ClientName = node[:install][:ClientName]
+SoftwareName = node[:install][:SoftwareName]
+DeploymentType = node[:install][:DeploymentType]
+DocumentRoot = node[:install][:DocumentRoot]
 
 template 'heal_mongo.sh' do
 	path "/root/heal_mongo.sh"
@@ -40,9 +41,9 @@ script "heal_mongo" do
 	echo "Heal Mongo Cluster" >> /root/mongo-init.log
 	sleep 50
 
-	AWSHOSTS=$(aws ec2 describe-instances --region #{Region} --filter Name=instance-state-name,Values=running Name=tag-key,Values='opsworks:layer:#{BrickName}-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
-	aws ec2 describe-instances --region #{Region} --filter Name=instance-state-name,Values=running Name=tag-key,Values='opsworks:layer:#{BrickName}-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > #{control_root}/mongohosts.txt
-	echo "#{StackName}" > #{control_root}/stackname.txt
+	AWSHOSTS=$(aws ec2 describe-instances --region #{Region} --filter Name=instance-state-name,Values=running Name=tag-key,Values='opsworks:layer:#{ClientName}-web' Name=tag-value,Values='#{DeploymentType}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
+	aws ec2 describe-instances --region #{Region} --filter Name=instance-state-name,Values=running Name=tag-key,Values='opsworks:layer:#{ClientName}-web' Name=tag-value,Values='#{DeploymentType}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > #{DocumentRoot}/#{SoftwareName}/clients/#{client_name}/mongohosts.txt
+	echo "#{StackName}" > #{DocumentRoot}/#{SoftwareName}/clients/#{client_name}/stackname.txt
 
 	#Loop through status and get ids
 	IDS=()

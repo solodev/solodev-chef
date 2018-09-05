@@ -18,7 +18,7 @@ in_array() {
 }
 
 #Check amazon for current storage hosts
-AWSHOSTS=$(aws ec2 describe-instances --region $REGION --filter Name=tag-key,Values='opsworks:layer:<%= node[:install][:client_name] %>-web' Name=tag-value,Values='<%= node[:install][:mongo_nodes] %>' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values=$STACKNAME --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
+AWSHOSTS=$(aws ec2 describe-instances --region $REGION --filter Name=tag-key,Values='opsworks:layer:<%= node[:install][:ClientName] %>-web' Name=tag-value,Values='<%= node[:install][:DeploymentType] %>' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values=$STACKNAME --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
 
 #Loop through status and get id's
 IDS=()

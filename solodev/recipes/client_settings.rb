@@ -1,12 +1,12 @@
-document_root = node[:install][:document_root]
-software_name = node[:install][:software_name]
-client_name = node[:install][:client_name]
+DocumentRoot = node[:install][:DocumentRoot]
+SoftwareName = node[:install][:SoftwareName]
+ClientName = node[:install][:ClientName]
 
 template 'Client_Settings.xml' do
-	not_if { ::File.exists?("#{document_root}/#{software_name}/clients/#{client_name}/Client_Settings.xml") }
-  path "#{document_root}/#{software_name}/clients/#{client_name}/Client_Settings.xml"
+	not_if { ::File.exists?("#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/Client_Settings.xml") }
+  path "#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/Client_Settings.xml"
   variables( 
-  	private_ip: "instance['private_ip']"
+  	MongoHost: "#{MongoHost}"
   )
   action :create
   source 'Client_Settings.xml.erb'

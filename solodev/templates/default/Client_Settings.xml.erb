@@ -3,7 +3,7 @@
 	<setting name="client">
 		<name>Client Name</name>
 		<shortcut>%client%</shortcut>
-		<value><%= node[:install][:client_name] %></value>
+		<value><%= node[:install][:ClientName] %></value>
 		<default></default>
 	</setting>
 	<setting name="website">
@@ -81,7 +81,7 @@
 	<setting name="mongo-hostname">
 		<name>Mongo</name>
 		<shortcut>%mongo%</shortcut>
-		<value><%= @private_ip %></value>
+		<value><%= node[:install][:MongoHost] %></value>
 		<default></default>
 	</setting>
 	<setting name="db-database">
@@ -93,31 +93,31 @@
 	<setting name="db-hostname">
 		<name>DB Server Hostname</name>
 		<shortcut>%dbhn%</shortcut>
-		<value><%= node[:install][:DBHOST] %></value>
+		<value><%= node[:install][:DBHost] %></value>
 		<default></default>
 	</setting>
 	<setting name="db-write-hostname">
 		<name>DB Server Hostname</name>
 		<shortcut>%dbhn%</shortcut>
-		<value><%= node[:install][:DBHOST] %></value>
+		<value><%= node[:install][:DBHost] %></value>
 		<default></default>
 	</setting>
 	<setting name="db-username">
 		<name>DBMS Username</name>
 		<shortcut>%dbun%</shortcut>
-		<value><%= node[:install][:DBUSER] %></value>
+		<value><%= node[:install][:DBUser] %></value>
 		<default></default>
 	</setting>
 	<setting name="db-password">
 		<name>DBMS Password</name>
 		<shortcut>%dbpw%</shortcut>
-		<value><%= node[:install][:DBPASSWORD] %></value>
+		<value><%= node[:install][:DBPassword] %></value>
 		<default></default>
 	</setting>
 	<setting name="db-write-password">
 		<name>DBMS Password</name>
 		<shortcut>%dbpw%</shortcut>
-		<value><%= node[:install][:DBPASSWORD] %></value>
+		<value><%= node[:install][:DBPassword] %></value>
 		<default></default>
 	</setting>
 	<setting name="ODBC">

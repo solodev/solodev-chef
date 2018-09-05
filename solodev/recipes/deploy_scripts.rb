@@ -1,7 +1,7 @@
 AWSAccessKeyId = node[:install][:AWSAccessKeyId]
 AWSSecretKey = node[:install][:AWSSecretKey]
 InstallBucketName = node[:install][:InstallBucketName]
-apache_conf_dir = node[:install][:apache_conf_dir]
+ApacheConfDir = node[:install][:ApacheConfDir]
 
 #Install Software
 script "setup_scripts" do
@@ -29,7 +29,7 @@ script "setup_scripts" do
 		#Set Crontab
 		echo "*/5 * * * * /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --disk-space-util --disk-path=/ --from-cron --auto-scaling" >> /root/crontab.txt
 		echo "0 1,13 * * * /root/tune_apache.sh" >> /root/crontab.txt
-		echo "*/2 * * * * php #{apache_conf_dir}/restart.php" >> /root/crontab.txt
+		echo "*/2 * * * * php #{ApacheConfDir}/restart.php" >> /root/crontab.txt
 		crontab /root/crontab.txt
 
   EOH
@@ -37,7 +37,7 @@ end
 
 #Install CMS Apache conf
 template 'restart.php' do
-  path apache_conf_dir+'/restart.php'
+  path ApacheConfDir+'/restart.php'
   source 'restart.php.erb'
   owner 'root'
   group 'root'

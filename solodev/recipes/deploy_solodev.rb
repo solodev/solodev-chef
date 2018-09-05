@@ -1,26 +1,26 @@
-document_root = node[:install][:document_root]
-software_name = node[:install][:software_name]
-client_name = node[:install][:client_name]
-ADMINUSER = node[:install][:ADMINUSER]
-ADMINPASSWORD = node[:install][:ADMINPASSWORD]
-WEBSITE = node[:install][:WEBSITE]
-THEME = node[:install][:THEME]
+DocumentRoot = node[:install][:DocumentRoot]
+SolodevUser = node[:install][:SolodevUser]
+SolodevPassword = node[:install][:SolodevPassword]
+SolodevWebsite = node[:install][:SolodevWebsite]
+SolodevTheme = node[:install][:SolodevTheme]
+SoftwareName = node[:install][:SoftwareName]
+ClientName = node[:install][:ClientName]
 
 #Backup Software
 script "backup_software" do
-	only_if  { ::File.exists?("#{document_root}/#{software_name}/modules") }
+	only_if  { ::File.exists?("#{DocumentRoot}/#{SoftwareName}/modules") }
 	interpreter "bash"
 	user "root"
 	cwd "/root"
 	code <<-EOH
-		rm -Rf #{document_root}/#{software_name}/old
-		mkdir "#{document_root}/#{software_name}/old"
-		mv #{document_root}/#{software_name}/modules #{document_root}/#{software_name}/old/
-		mv #{document_root}/#{software_name}/core #{document_root}/#{software_name}/old/
-		mv #{document_root}/#{software_name}/vendor #{document_root}/#{software_name}/old/
-		mv #{document_root}/#{software_name}/composer.json #{document_root}/#{software_name}/old/
-		mv #{document_root}/#{software_name}/composer.lock #{document_root}/#{software_name}/old/
-		rm -Rf #{document_root}/#{software_name}/license.php
+		rm -Rf #{DocumentRoot}/#{SoftwareName}/old
+		mkdir "#{DocumentRoot}/#{SoftwareName}/old"
+		mv #{DocumentRoot}/#{SoftwareName}/modules #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/core #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/vendor #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/composer.json #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/composer.lock #{DocumentRoot}/#{SoftwareName}/old/
+		rm -Rf #{DocumentRoot}/#{SoftwareName}/license.php
 	EOH
 end
 
@@ -32,8 +32,8 @@ script "install_software" do
   code <<-EOH
   
 		#Make sure default html folder exists.  This will not be used.
-		mkdir -p #{document_root}/html
-		mkdir -p #{document_root}/#{software_name}
+		mkdir -p #{DocumentRoot}/html
+		mkdir -p #{DocumentRoot}/#{SoftwareName}
 	
 		#Install Solodev CMS
 		mkdir -p /root/Solodev
@@ -48,12 +48,12 @@ script "install_software" do
 		cd ..
 		chown -Rf apache.apache Solodev
 		chmod -Rf 2770 Solodev
-		mv Solodev/modules #{document_root}/#{software_name}/
-		mv Solodev/core #{document_root}/#{software_name}/
-		mv Solodev/vendor #{document_root}/#{software_name}/
-		mv Solodev/license.php #{document_root}/#{software_name}/
-		mv Solodev/composer.json #{document_root}/#{software_name}/
-		mv Solodev/composer.lock #{document_root}/#{software_name}/
+		mv Solodev/modules #{DocumentRoot}/#{SoftwareName}/
+		mv Solodev/core #{DocumentRoot}/#{SoftwareName}/
+		mv Solodev/vendor #{DocumentRoot}/#{SoftwareName}/
+		mv Solodev/license.php #{DocumentRoot}/#{SoftwareName}/
+		mv Solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
+		mv Solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		rm -Rf /root/Solodev
 		
 		service httpd start

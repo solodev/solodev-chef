@@ -1,10 +1,9 @@
-document_root = node[:install][:document_root]
-software_name = node[:install][:software_name]
-client_name = node[:install][:client_name]
-ADMINUSER = node[:install][:ADMINUSER]
-ADMINPASSWORD = node[:install][:ADMINPASSWORD]
-WEBSITE = node[:install][:WEBSITE]
-THEME = node[:install][:THEME]
+DocumentRoot = node[:install][:DocumentRoot]
+SolodevUser = node[:install][:SolodevUser]
+SolodevPassword = node[:install][:SolodevPassword]
+SolodevWebsite = node[:install][:SolodevWebsite]
+SolodevTheme = node[:install][:SolodevTheme]
+SoftwareName = node[:install][:SoftwareName]
 
 #Update Software
 script "update_software" do
@@ -13,8 +12,8 @@ script "update_software" do
     cwd "/root"
     code <<-EOH
 
-        echo "php #{document_root}/#{software_name}/core/update.php #{ADMINUSER} #{ADMINPASSWORD}" >> /root/phpinstall.log
-        php #{document_root}/#{software_name}/core/update.php #{ADMINUSER} #{ADMINPASSWORD} #{WEBSITE} #{THEME} >> /root/phpinstall.log
+        echo "php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}" >> /root/phpinstall.log
+        php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword} #{SolodevWebsite} #{SolodevTheme} >> /root/phpinstall.log
 
     EOH
 end

@@ -1,22 +1,20 @@
 VolumeName = node[:install][:VolumeName]
 StackName = node[:install][:StackName]
 Region = node[:install][:Region]
-document_root = node[:install][:document_root]
-software_name = node[:install][:software_name]
-client_name = node[:install][:client_name]
-
+DocumentRoot = node[:install][:DocumentRoot]
 AWSAccessKeyId = node[:install][:AWSAccessKeyId]
 AWSSecretKey = node[:install][:AWSSecretKey]
 RestoreBucketName = node[:install][:RestoreBucketName]
 InstallBucketName = node[:install][:InstallBucketName]
-mongo_nodes = node[:install][:mongo_nodes]
-
 DBName = node[:install][:DBName]
-DBHOST = node[:install][:DBHOST]
-DBUSER = node[:install][:DBUSER]
-DBPASSWORD = node[:install][:DBPASSWORD]
+DBHost = node[:install][:DBHost]
+DBUser = node[:install][:DBUser]
+DBPassword = node[:install][:DBPassword]
+DeploymentType = node[:install][:DeploymentType]
+SoftwareName = node[:install][:SoftwareName]
+ClientName = node[:install][:ClientName]
 
-mount_path = "#{document_root}/#{software_name}/clients/#{client_name}"
+mount_path = "#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}"
 
 Chef::Log.info(mount_path)
 
@@ -36,8 +34,8 @@ script "install_mysqldump" do
 		echo "# Remove old DBFILE" >> /root/dumpmysql.sh
 		echo 'rm -f $DBFILE' >> /root/dumpmysql.sh
 		echo "# Heavy Lifting" >> /root/dumpmysql.sh
-		echo '/usr/bin/mysql -h #{DBHOST} -u #{DBUSER} -p#{DBPASSWORD} mysql -Ns -e "show databases" > $DBFILE' >> /root/dumpmysql.sh
-		echo 'for i in `cat $DBFILE` ; do mysqldump --opt --single-transaction -h #{DBHOST} -u #{DBUSER} -p#{DBPASSWORD} $i > $PWD/$i.sql ; done' >> /root/dumpmysql.sh
+		echo '/usr/bin/mysql -h #{DBHost} -u #{DBUser} -p#{DBPassword} mysql -Ns -e "show databases" > $DBFILE' >> /root/dumpmysql.sh
+		echo 'for i in `cat $DBFILE` ; do mysqldump --opt --single-transaction -h #{DBHost} -u #{DBUser} -p#{DBPassword} $i > $PWD/$i.sql ; done' >> /root/dumpmysql.sh
 		echo "# Compress Backups" >> /root/dumpmysql.sh
 		echo 'for i in `cat $DBFILE` ; do gzip -f $PWD/$i.sql ; done' >> /root/dumpmysql.sh
 		chmod 700 /root/dumpmysql.sh
@@ -69,7 +67,7 @@ script "install_duplicity" do
 		perl -pi -e 's/GPG_KEY/#GPG_KEY/g' /etc/duply/backup/conf
 		perl -pi -e 's/GPG_PW/#GPG_PW/g' /etc/duply/backup/conf
 		echo "GPG_PW='iYJQC1nt/CL7W+vi+t12WmqXpcI='" >> /etc/duply/backup/conf
-		echo "TARGET='s3+http://#{client_name}-#{StackName}-backup/backups'" >> /etc/duply/backup/conf
+		echo "TARGET='s3+http://#{ClientName}-#{StackName}-backup/backups'" >> /etc/duply/backup/conf
 		echo "TARGET_USER='#{AWSAccessKeyId}'" >> /etc/duply/backup/conf
 		echo "TARGET_PASS='#{AWSSecretKey}'" >> /etc/duply/backup/conf
 		echo "SOURCE='#{mount_path}'" >> /etc/duply/backup/conf
@@ -85,10 +83,10 @@ script "install_duplicity" do
 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/restore.sh
 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /root/restore.sh
 		echo "export PASSPHRASE=iYJQC1nt/CL7W+vi+t12WmqXpcI=" >> /root/restore.sh
-		echo "duplicity --force -v8 restore s3+http://#{client_name}-#{RestoreBucketName}/backups/ #{mount_path}" >> /root/restore.sh
+		echo "duplicity --force -v8 restore s3+http://#{ClientName}-#{RestoreBucketName}/backups/ #{mount_path}" >> /root/restore.sh
 		echo "chmod -Rf 2770 #{mount_path}" >> /root/restore.sh
 		echo "chown -Rf apache.apache #{mount_path}" >> /root/restore.sh
-		echo "gunzip < #{mount_path}/dbdumps/#{DBName}.sql.gz | mysql -h #{DBHOST} -u #{DBUSER} -p#{DBPASSWORD} #{DBName}" >> /root/restore.sh
+		echo "gunzip < #{mount_path}/dbdumps/#{DBName}.sql.gz | mysql -h #{DBHost} -u #{DBUser} -p#{DBPassword} #{DBName}" >> /root/restore.sh
 		echo "mongorestore --host `mongo --quiet --eval \"db.isMaster()['primary']\"` #{mount_path}/mongodumps" >> /root/restore.sh
 		#echo "mongorestore #{mount_path}/mongodumps" >> /root/restore.sh
 		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /root/restore.sh

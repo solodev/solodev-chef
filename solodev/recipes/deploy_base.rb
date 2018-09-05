@@ -1,9 +1,9 @@
-document_root = node[:install][:document_root]
-software_name = node[:install][:software_name]
-client_name = node[:install][:client_name]
+DocumentRoot = node[:install][:DocumentRoot]
+SoftwareName = node[:install][:SoftwareName]
+ClientName = node[:install][:ClientName]
 
-directory document_root+'/'+software_name+'/clients/'+client_name+'/Vhosts' do
-	not_if do ::File.exists?("#{document_root}/#{software_name}/clients/#{client_name}/Vhosts") end
+directory DocumentRoot+'/'+SoftwareName+'/clients/'+ClientName+'/Vhosts' do
+	not_if do ::File.exists?("#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/Vhosts") end
   owner 'apache'
   group 'apache'
   mode '0755'
@@ -12,8 +12,8 @@ directory document_root+'/'+software_name+'/clients/'+client_name+'/Vhosts' do
   action :create
 end
 
-directory document_root+'/'+software_name+'/clients/'+client_name+'/s.Vhosts' do
-	not_if do ::File.exists?("#{document_root}/#{software_name}/clients/#{client_name}/s.Vhosts") end
+directory DocumentRoot+'/'+SoftwareName+'/clients/'+ClientName+'/s.Vhosts' do
+	not_if do ::File.exists?("#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/s.Vhosts") end
   owner 'apache'
   group 'apache'
   mode '0755'

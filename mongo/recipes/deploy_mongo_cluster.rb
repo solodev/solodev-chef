@@ -1,9 +1,12 @@
 Region = node[:install][:Region]
 StackName = node[:install][:StackName]
-DBUSER = node[:install][:DBUSER]
-DBPASSWORD = node[:install][:DBPASSWORD]
-mongo_nodes = node[:install][:mongo_nodes]
-control_root = node[:install][:control_root]
+DBUser = node[:install][:DBUser]
+DBPassword = node[:install][:DBPassword]
+DeploymentType = node[:install][:DeploymentType]
+
+DocumentRoot = node[:install][:DocumentRoot]
+software_name = "Solodev"
+client_name = "solodev"
 
 script "configure_mongo" do
 	not_if { ::File.exists?("/root/mongo.lock") }
@@ -12,14 +15,14 @@ script "configure_mongo" do
 	cwd "/root"
 	code <<-EOH
 	
-		aws ec2 describe-instances --region #{Region} --filter Name=tag-key,Values='opsworks:layer:solodev-web' Name=tag-value,Values='#{mongo_nodes}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > #{control_root}/mongohosts.txt
+		aws ec2 describe-instances --region #{Region} --filter Name=tag-key,Values='opsworks:layer:solodev-web' Name=tag-value,Values='#{DeploymentType}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > #{control_root}/mongohosts.txt
 
 		MASTER=$(wget -O- -q http://169.254.169.254/latest/meta-data/local-ipv4)
 		declare -i i=0
 		while read host; do
 		hosts[i]="$host"
 		let i++
-		done < #{control_root}/mongohosts.txt
+		done < #{DocumentRoot}/#{software_name}/clients/#{client_name}/mongohosts.txt
 
 		echo 'Deploy Mongo Cluster' > /root/mongo-init.log
 		echo 'rs.initiate()' | mongo --host ${hosts[0]} &>> /root/mongo-init.log
@@ -37,7 +40,7 @@ script "configure_mongo" do
 		echo 'rs.reconfig(cfg)' >> /root/mongouser.js
 		echo 'rs.slaveOk()' >> /root/mongoconfig.js
 		echo 'use solodev_views;' >> /root/mongouser.js
-		echo 'db.createUser({"user": "#{DBUSER}", "pwd": "#{DBPASSWORD}", "roles": [ { role: "readWrite", db: "solodev_views" } ] })' >> /root/mongouser.js 
+		echo 'db.createUser({"user": "#{DBUser}", "pwd": "#{DBPassword}", "roles": [ { role: "readWrite", db: "solodev_views" } ] })' >> /root/mongouser.js 
 		mongo --host ${hosts[0]} < /root/mongouser.js &>> /root/mongo-init.log
 		rm -Rf /root/mongouser.js
 
