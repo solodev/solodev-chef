@@ -90,6 +90,7 @@ script "install_duplicity" do
 				
 		echo "/root/dumpmysql.sh >/dev/null 2>&1" >> /etc/duply/backup/pre
 		echo "mongodump --host `mongo --quiet --eval \"db.isMaster()['primary']\"` --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
+		#For local dump.  
 		#echo "mongodump --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /etc/duply/backup/pre
 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /etc/duply/backup/pre
