@@ -15,7 +15,7 @@ script "configure_mongo" do
 	cwd "/root"
 	code <<-EOH
 	
-		aws ec2 describe-instances --region #{Region} --filter Name=tag-key,Values='opsworks:layer:solodev-web' Name=tag-value,Values='#{DeploymentType}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > #{control_root}/mongohosts.txt
+		aws ec2 describe-instances --region #{Region} --filter Name=tag-key,Values='opsworks:layer:solodev-web' Name=tag-value,Values='#{DeploymentType}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > #{DocumentRoot}/#{software_name}/clients/#{client_name}/mongohosts.txt
 
 		MASTER=$(wget -O- -q http://169.254.169.254/latest/meta-data/local-ipv4)
 		declare -i i=0
