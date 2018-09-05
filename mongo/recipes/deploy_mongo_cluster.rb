@@ -3,7 +3,6 @@ StackName = node[:install][:StackName]
 DBUser = node[:install][:DBUser]
 DBPassword = node[:install][:DBPassword]
 DeploymentType = node[:install][:DeploymentType]
-
 DocumentRoot = node[:install][:DocumentRoot]
 software_name = "Solodev"
 client_name = "solodev"
