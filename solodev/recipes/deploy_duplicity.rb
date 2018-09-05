@@ -45,14 +45,6 @@ script "install_mysqldump" do
 	EOH
 end
 
-template 'duply_backups.sh' do
-	not_if { ::File.exists?("/usr/bin/duply_backups.sh") }
-	path "/usr/bin/duply_backups.sh"
-	action :create
-	source 'duply_backups.sh.erb'
-	mode '0755'
-end
-
 script "install_duplicity" do
 	not_if { ::File.exists?("/root/restore.sh") }
 	interpreter "bash"
