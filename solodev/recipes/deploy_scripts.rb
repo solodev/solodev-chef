@@ -29,16 +29,25 @@ script "setup_scripts" do
 		#Set Crontab
 		echo "*/5 * * * * /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --disk-space-util --disk-path=/ --from-cron --auto-scaling" >> /root/crontab.txt
 		echo "0 1,13 * * * /root/tune_apache.sh" >> /root/crontab.txt
-		echo "*/2 * * * * php #{ApacheConfDir}/restart.php" >> /root/crontab.txt
+		echo "*/2 * * * * php /root/restart.php" >> /root/crontab.txt
 		crontab /root/crontab.txt
 
   EOH
 end
 
-#Install CMS Apache conf
+#Install restart.php
 template 'restart.php' do
-  path ApacheConfDir+'/restart.php'
+  path /root/restart.php'
   source 'restart.php.erb'
+  owner 'root'
+  group 'root'
+  mode 0644
+end
+
+#Install CMS Apache conf
+template 'solodev.conf' do
+  path ApacheConfDir+'/solodev.conf'
+  source 'solodev.conf.erb'
   owner 'root'
   group 'root'
   mode 0644
