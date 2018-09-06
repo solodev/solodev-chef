@@ -13,7 +13,7 @@ script "update_software" do
     code <<-EOH
 
         echo "php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}" >> /root/phpinstall.log
-        php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword} #{SolodevWebsite} #{SolodevTheme} >> /root/phpinstall.log
+        php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}  >> /root/phpinstall.log
 
     EOH
 end
