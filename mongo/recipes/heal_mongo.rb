@@ -43,7 +43,7 @@ script "heal_mongo" do
 
 	AWSHOSTS=$(aws ec2 describe-instances --region #{Region} --filter Name=instance-state-name,Values=running Name=tag-key,Values='opsworks:layer:#{ClientName}-web' Name=tag-value,Values='#{DeploymentType}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text)
 	aws ec2 describe-instances --region #{Region} --filter Name=instance-state-name,Values=running Name=tag-key,Values='opsworks:layer:#{ClientName}-web' Name=tag-value,Values='#{DeploymentType}' Name=tag-key,Values='opsworks:stack' Name=tag-value,Values='#{StackName}' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text > #{DocumentRoot}/#{SoftwareName}/clients/#{client_name}/mongohosts.txt
-	echo "#{StackName}" > #{DocumentRoot}/#{SoftwareName}/clients/#{client_name}/stackname.txt
+	echo "#{StackName}" > #{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/stackname.txt
 
 	#Loop through status and get ids
 	IDS=()
