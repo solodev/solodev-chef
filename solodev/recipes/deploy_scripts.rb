@@ -37,7 +37,7 @@ end
 
 #Install restart.php
 template 'restart.php' do
-  path /root/restart.php'
+  path '/root/restart.php'
   source 'restart.php.erb'
   owner 'root'
   group 'root'
