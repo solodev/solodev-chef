@@ -14,6 +14,5 @@ IncludeOptional <%= node[:install][:DocumentRoot] %>/<%= node[:install][:Softwar
 Alias /core <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/html_core
 Alias /CK <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/CK
 Alias /api <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/api
-ServerName <%= node[:install][:FQDN] %>
 DocumentRoot <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/solodevX/www
 </VirtualHost>
