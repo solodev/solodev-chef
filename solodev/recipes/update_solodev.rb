@@ -9,11 +9,11 @@ SoftwareName = node[:install][:SoftwareName]
 script "update_software" do
     interpreter "bash"
     user "apache"
-    cwd "/var/www/Solodev"
+    cwd "#{DocumentRoot}/#{SoftwareName}"
     code <<-EOH
 
-        echo "php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}" >> /var/www/Solodev/phpinstall.log
-        php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}  >> /var/www/Solodev/phpinstall.log
+        echo "php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}" >> #{DocumentRoot}/#{SoftwareName}/clients/solodev/phpinstall.log
+        php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}  >> #{DocumentRoot}/#{SoftwareName}/clients/solodev/phpinstall.log
 
     EOH
 end
