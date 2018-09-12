@@ -30,6 +30,12 @@ script "install_software" do
   user "root"
   cwd "/root"
   code <<-EOH
+
+		serviceCommand() {
+			if service --status-all | grep -Fq ${1}; then
+				service ${1} ${2}
+			fi
+		}
   
 		#Make sure default html folder exists.  This will not be used.
 		mkdir -p #{DocumentRoot}/html
@@ -43,8 +49,8 @@ script "install_software" do
 		unzip Solodev.zip
 		rm -Rf Solodev.zip
 		
-		service httpd stop
-		# service php72-php-fpm stop 
+		serviceCommand httpd stop
+		serviceCommand php72-php-fpm stop
 
 		cd ..
 		chown -Rf apache.apache Solodev
@@ -57,8 +63,8 @@ script "install_software" do
 		mv Solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		rm -Rf /root/Solodev
 		
-		service httpd start
-		# service php-fpm start 
+		serviceCommand httpd start
+		serviceCommand php72-php-fpm start
 		
 	EOH
 end
