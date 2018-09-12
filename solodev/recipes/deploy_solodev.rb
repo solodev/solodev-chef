@@ -44,7 +44,7 @@ script "install_software" do
 		rm -Rf Solodev.zip
 		
 		service httpd stop
-		service php72-php-fpm stop 
+		# service php72-php-fpm stop 
 
 		cd ..
 		chown -Rf apache.apache Solodev
@@ -58,7 +58,7 @@ script "install_software" do
 		rm -Rf /root/Solodev
 		
 		service httpd start
-		service php72-php-fpm start 
+		# service php-fpm start 
 		
 	EOH
 end
