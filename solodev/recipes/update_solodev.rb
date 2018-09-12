@@ -8,7 +8,7 @@ SoftwareName = node[:install][:SoftwareName]
 #Update Software
 script "update_software" do
     interpreter "bash"
-    user "root"
+    user "apache"
     cwd "/root"
     code <<-EOH
 
