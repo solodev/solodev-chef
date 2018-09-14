@@ -9,7 +9,6 @@ script "init_mongo" do
 	code <<-EOH
 
 		touch /root/initmongo.txt
-		echo 'rs.initiate();' >> /root/initmongo.js
 		echo 'use solodev_views;' >> /root/initmongo.js
 		echo 'db.createUser({"user": "#{DBUser}", "pwd": "#{DBPassword}", "roles": [ { role: "readWrite", db: "solodev_views" } ] })' >> /root/initmongo.js 
 		mongo < /root/initmongo.js
