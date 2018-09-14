@@ -15,6 +15,8 @@ script "update_software" do
 
         echo "php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}" >> #{DocumentRoot}/#{SoftwareName}/clients/solodev/phpinstall.log
         php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}  >> #{DocumentRoot}/#{SoftwareName}/clients/solodev/phpinstall.log
+        cd #{DocumentRoot}/#{SoftwareName}/clients/solodev/Main
+        chmod -f 2770 *
 
     EOH
 end
