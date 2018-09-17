@@ -9,7 +9,9 @@ systemLog:
 processManagement:
    fork: true
    pidFilePath: "/var/run/mongodb/mongod.pid"
+<% if node[:install][:MongoHost]!='127.0.0.1' -%>
 replication:
    replSetName: <%= node[:install][:StackName] %>
+<% end -%>
 net:
    bindIp: 0.0.0.0
