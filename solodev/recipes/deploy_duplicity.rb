@@ -70,7 +70,7 @@ script "install_duplicity" do
 		echo 'DUPL_PARAMS="$DUPL_PARAMS --volsize $VOLSIZE"' >> /etc/duply/backup/conf
 		echo 'DUPL_PARAMS="$DUPL_PARAMS --full-if-older-than $MAX_FULLBKP_AGE"' >> /etc/duply/backup/conf
 				
-		#Restore Script
+		# Restore Script
 		echo "#!/bin/bash" >> /root/restore.sh
 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/restore.sh
 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /root/restore.sh
