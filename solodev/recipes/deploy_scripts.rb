@@ -27,10 +27,9 @@ script "setup_scripts" do
     sleep 10
 		
 		#Set Crontab
-		echo "*/5 * * * * /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --disk-space-util --disk-path=/ --from-cron --auto-scaling" >> /root/crontab.txt
-		echo "0 1,13 * * * /root/tune_apache.sh" >> /root/crontab.txt
-		echo "*/2 * * * * php /root/restart.php" >> /root/crontab.txt
-		crontab /root/crontab.txt
+    (crontab -l 2>/dev/null; echo "*/5 * * * * /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --disk-space-util --disk-path=/ --from-cron --auto-scaling") | crontab -
+    (crontab -l 2>/dev/null; echo "0 1,13 * * * /root/tune_apache.sh") | crontab -
+    (crontab -l 2>/dev/null; echo "*/2 * * * * php /root/restart.php") | crontab -
 
   EOH
 end
