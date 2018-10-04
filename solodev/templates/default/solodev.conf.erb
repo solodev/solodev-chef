@@ -12,7 +12,7 @@ IncludeOptional <%= node[:install][:DocumentRoot] %>/<%= node[:install][:Softwar
 
 <VirtualHost *:80>
 Alias /core <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/html_core
-Alias /CK <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/CK
+Alias /CK <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www/node_modules/ckeditor-full
 Alias /api <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/api
 DocumentRoot <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www
 </VirtualHost>

@@ -20,6 +20,8 @@ script "backup_software" do
 		mv #{DocumentRoot}/#{SoftwareName}/vendor #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/composer.json #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/composer.lock #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/version.txt #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/public #{DocumentRoot}/#{SoftwareName}/old/
 		rm -Rf #{DocumentRoot}/#{SoftwareName}/license.php
 	EOH
 end
@@ -54,9 +56,11 @@ script "install_software" do
 		mv Solodev/modules #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/core #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/vendor #{DocumentRoot}/#{SoftwareName}/
+		mv Solodev/public #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/license.php #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
+		mv Solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
 		rm -Rf /root/Solodev
 		
 		service httpd start

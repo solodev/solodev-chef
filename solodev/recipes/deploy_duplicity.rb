@@ -72,8 +72,8 @@ script "install_duplicity" do
 				
 		# Restore Script
 		echo "#!/bin/bash" >> /root/restore.sh
-		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/restore.sh
-		echo "sudo alternatives --set python /usr/bin/python2.6" >> /root/restore.sh
+		#echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/restore.sh
+		#echo "sudo alternatives --set python /usr/bin/python2.6" >> /root/restore.sh
 		echo "export PASSPHRASE=iYJQC1nt/CL7W+vi+t12WmqXpcI=" >> /root/restore.sh
 		echo "duplicity --force -v8 restore s3+http://#{ClientName}-#{RestoreBucketName}/backups/ #{mount_path}" >> /root/restore.sh
 		echo "chmod -Rf 2770 #{mount_path}" >> /root/restore.sh
@@ -81,7 +81,7 @@ script "install_duplicity" do
 		echo "gunzip < #{mount_path}/dbdumps/#{DBName}.sql.gz | mysql -h #{DBHost} -u #{DBUser} -p#{DBPassword} #{DBName}" >> /root/restore.sh
 		echo "mongorestore --host `mongo --quiet --eval \"db.isMaster()['primary']\"` #{mount_path}/mongodumps" >> /root/restore.sh
 		#echo "mongorestore #{mount_path}/mongodumps" >> /root/restore.sh
-		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /root/restore.sh
+		#echo "sudo alternatives --remove python /usr/bin/python2.6" >> /root/restore.sh
 		chmod 700 /root/restore.sh
 		
 		# Install DB Dump Backups
