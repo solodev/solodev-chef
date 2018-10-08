@@ -12,7 +12,7 @@ script "init_mongo" do
 		echo 'use solodev_views;' >> /root/initmongo.js
 		echo 'db.createUser({"user": "#{DBUser}", "pwd": "#{DBPassword}", "roles": [ { role: "readWrite", db: "solodev_views" } ] })' >> /root/initmongo.js 
 		mongo < /root/initmongo.js
-		#rm -Rf /root/initmongo.js
+		rm -Rf /root/initmongo.js
 		
 	EOH
 end
