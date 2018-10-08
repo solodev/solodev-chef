@@ -48,8 +48,11 @@ print "Apache Restart Time converted to Timestamp is " . $restarttime . "\n";
 
 if ($restarttime) {
   //var_dump($restarttime);
-  $path = "<%= node[:install][:document_root] %>/<%= node[:install][:software_name] %>/clients/<%= node[:install][:client_name] %>/Vhosts";
+
+  $path = "/var/www/Solodev/clients/solodev/Vhosts";
+
   $restart_now = false;
+
   $d = dir($path);
   
   while (false !== ($entry = $d->read())) {
