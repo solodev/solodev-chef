@@ -62,10 +62,6 @@ script "install_software" do
 		mv Solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
 		rm -Rf /root/Solodev
-
-		#Update Hosts file to resolve local solodev
-		echo "#Solodev PHP-FPM" >> /etc/hosts
-		echo "127.0.0.1 solodev" >> /etc/hosts
 		
 		service httpd start
 		if [ -f /etc/init.d/php72-php-fpm ]; then
