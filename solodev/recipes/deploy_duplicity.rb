@@ -59,7 +59,7 @@ script "install_duplicity" do
 		perl -pi -e 's/GPG_KEY/#GPG_KEY/g' /etc/duply/backup/conf
 		perl -pi -e 's/GPG_PW/#GPG_PW/g' /etc/duply/backup/conf
 		echo "GPG_PW='iYJQC1nt/CL7W+vi+t12WmqXpcI='" >> /etc/duply/backup/conf
-		echo "TARGET='s3+http://#{ClientName}-#{StackName}-backup/backups'" >> /etc/duply/backup/conf
+		echo "TARGET='s3+http://#{StackName}-#{ClientName}/backups'" >> /etc/duply/backup/conf
 		echo "TARGET_USER='#{AWSAccessKeyId}'" >> /etc/duply/backup/conf
 		echo "TARGET_PASS='#{AWSSecretKey}'" >> /etc/duply/backup/conf
 		echo "SOURCE='#{mount_path}'" >> /etc/duply/backup/conf
@@ -75,7 +75,7 @@ script "install_duplicity" do
 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/restore.sh
 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /root/restore.sh
 		echo "export PASSPHRASE=iYJQC1nt/CL7W+vi+t12WmqXpcI=" >> /root/restore.sh
-		echo "duplicity --force -v8 restore s3+http://#{ClientName}-#{RestoreBucketName}/backups/ #{mount_path}" >> /root/restore.sh
+		echo "duplicity --force -v8 restore s3+http://#{StackName}-#{ClientName}/backups/ #{mount_path}" >> /root/restore.sh
 		echo "chmod -Rf 2770 #{mount_path}" >> /root/restore.sh
 		echo "chown -Rf apache.apache #{mount_path}" >> /root/restore.sh
 		echo "gunzip < #{mount_path}/dbdumps/#{DBName}.sql.gz | mysql -h #{DBHost} -u #{DBUser} -p#{DBPassword} #{DBName}" >> /root/restore.sh
