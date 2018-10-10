@@ -79,7 +79,13 @@ script "install_duplicity" do
 		echo "chmod -Rf 2770 #{mount_path}" >> /root/restore.sh
 		echo "chown -Rf apache.apache #{mount_path}" >> /root/restore.sh
 		echo "gunzip < #{mount_path}/dbdumps/#{DBName}.sql.gz | mysql -h #{DBHost} -u #{DBUser} -p#{DBPassword} #{DBName}" >> /root/restore.sh
-		echo "mongorestore --host `mongo --quiet --eval \"db.isMaster()['primary']\"` #{mount_path}/mongodumps" >> /root/restore.sh
+
+		if((#{MongoHost} == "instance['private_ip']")); then
+			echo "mongorestore --host `mongo --quiet --eval \"db.isMaster()['primary']\"` #{mount_path}/mongodumps" >> /root/restore.sh
+		else
+			echo "mongorestore #{mount_path}/mongodumps" >> /root/restore.sh
+		fi
+
 		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /root/restore.sh
 		chmod 700 /root/restore.sh
 		
@@ -88,12 +94,16 @@ script "install_duplicity" do
 		mkdir -p #{mount_path}/mongodumps
 				
 		echo "/root/dumpmysql.sh >/dev/null 2>&1" >> /etc/duply/backup/pre
-		echo "mongodump --host `mongo --quiet --eval \"db.isMaster()['primary']\"` --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
+
+		if((#{MongoHost} == "instance['private_ip']")); then
+			echo "mongodump --host `mongo --quiet --eval \"db.isMaster()['primary']\"` --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
+		else
+			echo "mongodump --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
+		fi
+
 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /etc/duply/backup/pre
 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /etc/duply/backup/pre
 		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /etc/duply/backup/post
-		#For local dump.  
-		#echo "mongodump --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
 
 		(crontab -l 2>/dev/null; echo "30 3 * * 1-6 duply backup backup") | crontab -
 		(crontab -l 2>/dev/null; echo "30 13 * * * duply backup backup") | crontab -
