@@ -13,6 +13,7 @@ DBPassword = node[:install][:DBPassword]
 DeploymentType = node[:install][:DeploymentType]
 SoftwareName = node[:install][:SoftwareName]
 ClientName = node[:install][:ClientName]
+MongoHost = node[:install][:MongoHost]
 
 mount_path = "#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}"
 
