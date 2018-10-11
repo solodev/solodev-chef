@@ -4,4 +4,4 @@ metadata
 
 cookbook 'solodev', path: 'solodev'
 cookbook 'mongo', path: 'mongo'
-cookbook 'aws_opsworks_system', path: 'aws_opsworks_system'
+cookbook 'opsworks_stack_state_sync', path: 'opsworks_stack_state_sync'
