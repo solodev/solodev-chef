@@ -73,6 +73,7 @@ script "install_duplicity" do
 				
 		# Restore Script
 		echo "#!/bin/bash" >> /root/restore.sh
+		echo "mv #{mount_path}/Client_Settings.xml #{mount_path}/Client_Settings.xml.bak" >> /root/restore.sh
 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/restore.sh
 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /root/restore.sh
 		echo "export PASSPHRASE=iYJQC1nt/CL7W+vi+t12WmqXpcI=" >> /root/restore.sh
@@ -80,6 +81,8 @@ script "install_duplicity" do
 		echo "chmod -Rf 2770 #{mount_path}" >> /root/restore.sh
 		echo "chown -Rf apache.apache #{mount_path}" >> /root/restore.sh
 		echo "gunzip < #{mount_path}/dbdumps/#{DBName}.sql.gz | mysql -h #{DBHost} -u #{DBUser} -p#{DBPassword} #{DBName}" >> /root/restore.sh
+		echo "rm -f #{mount_path}/Client_Settings.xml" >> /root/restore.sh
+		echo "mv #{mount_path}/Client_Settings.xml.bak #{mount_path}/Client_Settings.xml" >> /root/restore.sh
 
 		if((#{MongoHost} == "instance['private_ip']")); then
 			echo "mongorestore --host `mongo --quiet --eval \"db.isMaster()['primary']\"` #{mount_path}/mongodumps" >> /root/restore.sh
