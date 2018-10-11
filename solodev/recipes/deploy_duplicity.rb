@@ -83,8 +83,10 @@ script "install_duplicity" do
 
 		if((#{MongoHost} == "instance['private_ip']")); then
 			echo "mongorestore --host `mongo --quiet --eval \"db.isMaster()['primary']\"` #{mount_path}/mongodumps" >> /root/restore.sh
+			/root/heal_mongo.sh
 		else
 			echo "mongorestore #{mount_path}/mongodumps" >> /root/restore.sh
+			rm -Rf #{mount_path}/stackname.txt && rm -Rf #{mount_path}/mongohosts.txt
 		fi
 
 		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /root/restore.sh
