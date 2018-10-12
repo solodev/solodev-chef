@@ -89,7 +89,7 @@ script "install_duplicity" do
 			/root/heal_mongo.sh
 		else
 			echo "mongorestore #{mount_path}/mongodumps" >> /root/restore.sh
-			rm -Rf #{mount_path}/stackname.txt && rm -Rf #{mount_path}/mongohosts.txt
+			echo "rm -Rf #{mount_path}/stackname.txt && rm -Rf #{mount_path}/mongohosts.txt" >> /root/restore.sh
 		fi
 
 		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /root/restore.sh
