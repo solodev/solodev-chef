@@ -60,6 +60,7 @@ script "install_software" do
 		mv Solodev/license.php #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
+		mv Solodev/license.txt #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
 		rm -Rf /root/Solodev
 		
