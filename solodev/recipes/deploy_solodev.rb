@@ -9,7 +9,7 @@ EnterpriseMode = node[:install][:EnterpriseMode]
 
 #Backup Software
 script "backup_software" do
-	only_if  { ::File.exists?("#{DocumentRoot}/#{SoftwareName}/modules") || "#{EnterpriseMode}" == "True"}
+	only_if  { ::File.exists?("#{DocumentRoot}/#{SoftwareName}/modules") && "#{EnterpriseMode}" == "True"}
 	interpreter "bash"
 	user "root"
 	cwd "/root"
