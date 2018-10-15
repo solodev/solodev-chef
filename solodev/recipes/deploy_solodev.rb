@@ -5,10 +5,11 @@ SolodevWebsite = node[:install][:SolodevWebsite]
 SolodevTheme = node[:install][:SolodevTheme]
 SoftwareName = node[:install][:SoftwareName]
 ClientName = node[:install][:ClientName]
+EnterpriseMode = node[:install][:EnterpriseMode]
 
 #Backup Software
 script "backup_software" do
-	only_if  { ::File.exists?("#{DocumentRoot}/#{SoftwareName}/modules") }
+	only_if  { ::File.exists?("#{DocumentRoot}/#{SoftwareName}/modules") || "#{EnterpriseMode}" == "True"}
 	interpreter "bash"
 	user "root"
 	cwd "/root"
@@ -28,6 +29,7 @@ end
 
 #Install Software
 script "install_software" do
+  only_if  { "#{EnterpriseMode}" == "True"}
   interpreter "bash"
   user "root"
   cwd "/root"
