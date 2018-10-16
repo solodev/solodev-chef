@@ -17,7 +17,10 @@ script "update_software" do
         php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}  >> #{DocumentRoot}/#{SoftwareName}/clients/solodev/phpinstall.log
         cd #{DocumentRoot}/#{SoftwareName}/clients/solodev/Main
         chmod -f 2770 *
-        service httpd restart
+
+        if [ -f /etc/init.d/httpd ]; then
+            service httpd restart
+        fi
 
     EOH
 end
