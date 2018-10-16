@@ -59,7 +59,6 @@ script "install_software" do
 		mv Solodev/core #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/vendor #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/public #{DocumentRoot}/#{SoftwareName}/
-		mv Solodev/license.php #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/license.txt #{DocumentRoot}/#{SoftwareName}/

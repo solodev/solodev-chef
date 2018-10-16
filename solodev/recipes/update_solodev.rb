@@ -17,6 +17,7 @@ script "update_software" do
         php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}  >> #{DocumentRoot}/#{SoftwareName}/clients/solodev/phpinstall.log
         cd #{DocumentRoot}/#{SoftwareName}/clients/solodev/Main
         chmod -f 2770 *
+        service httpd restart
 
     EOH
 end
