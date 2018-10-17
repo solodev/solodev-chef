@@ -18,6 +18,15 @@ script "update_software" do
         cd #{DocumentRoot}/#{SoftwareName}/clients/solodev/Main
         chmod -f 2770 *
 
+    EOH
+end
+
+script "restart_web" do
+    interpreter "bash"
+    user "root"
+    cwd "/root"
+    code <<-EOH
+
         if [ -f /etc/init.d/httpd ]; then
             service httpd restart
         fi
