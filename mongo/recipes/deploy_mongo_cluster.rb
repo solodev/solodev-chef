@@ -21,7 +21,7 @@ script "configure_mongo" do
 		while read host; do
 		hosts[i]="$host"
 		let i++
-		done < #{DocumentRoot}/#{software_name}/clients/#{client_name}/mongohosts.txt
+		done < #{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/mongohosts.txt
 
 		echo 'Deploy Mongo Cluster' > /root/mongo-init.log
 		echo 'rs.initiate()' | mongo --host ${hosts[0]} &>> /root/mongo-init.log
