@@ -4,8 +4,8 @@ DBUser = node[:install][:DBUser]
 DBPassword = node[:install][:DBPassword]
 DeploymentType = node[:install][:DeploymentType]
 DocumentRoot = node[:install][:DocumentRoot]
-software_name = "Solodev"
-client_name = "solodev"
+SoftwareName = node[:install][:SoftwareName]
+ClientName = node[:install][:ClientName]
 
 script "configure_mongo" do
 	not_if { ::File.exists?("/root/mongo.lock") }
