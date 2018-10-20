@@ -79,6 +79,9 @@ script "restart_web" do
     cwd "/root"
     code <<-EOH
 
+		mkdir -p #{DocumentRoot}/#{SoftwareName}/tmp
+		chmod 777 #{DocumentRoot}/#{SoftwareName}/tmp
+
         if [ -f /etc/init.d/httpd ]; then
             service httpd restart
         fi
