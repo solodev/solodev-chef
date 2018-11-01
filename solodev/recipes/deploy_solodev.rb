@@ -23,7 +23,6 @@ script "backup_software" do
 		mv #{DocumentRoot}/#{SoftwareName}/composer.lock #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/version.txt #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/public #{DocumentRoot}/#{SoftwareName}/old/
-		rm -Rf #{DocumentRoot}/#{SoftwareName}/license.php
 	EOH
 end
 
@@ -40,10 +39,10 @@ script "install_software" do
 		mkdir -p #{DocumentRoot}/#{SoftwareName}
 	
 		#Install Solodev CMS
-		mkdir -p /root/Solodev
+		mkdir -p /root/solodev
 		fn="$(aws s3 ls s3://solodev-release | sort | tail -n 1 | awk '{print \$4}')"
-		aws s3 cp s3://solodev-release/$fn /root/Solodev/Solodev.zip
-		cd /root/Solodev
+		aws s3 cp s3://solodev-release/$fn /root/solodev/Solodev.zip
+		cd /root/solodev
 		unzip Solodev.zip
 		rm -Rf Solodev.zip
 		
@@ -62,8 +61,8 @@ script "install_software" do
 		mv Solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
-		mv Solodev/license.txt #{DocumentRoot}/#{SoftwareName}/
-		rm -Rf /root/Solodev
+		mv Solodev/.node_modules_global #{DocumentRoot}/#{SoftwareName}/
+		rm -Rf /root/solodev
 		
 		service httpd start
 		if [ -f /etc/init.d/php72-php-fpm ]; then
