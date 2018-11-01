@@ -61,11 +61,11 @@ script "install_software" do
 		mv Solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
-		mv Solodev/.node_modules_global #{DocumentRoot}/#{SoftwareName}/
+		mv Solodev/node_modules_global #{DocumentRoot}/#{SoftwareName}/
 		rm -Rf /root/solodev
 
-		export PATH=#{DocumentRoot}/#{SoftwareName}/.node_modules_global/bin:$PATH
-		npm config set prefix '#{DocumentRoot}/#{SoftwareName}/.node_modules_global'
+		export PATH=#{DocumentRoot}/#{SoftwareName}/node_modules_global/bin:$PATH
+		npm config set prefix '#{DocumentRoot}/#{SoftwareName}/node_modules_global'
 		
 		service httpd start
 		if [ -f /etc/init.d/php72-php-fpm ]; then
