@@ -33,6 +33,7 @@ script "install_software" do
   user "root"
   cwd "/root"
   code <<-EOH
+ 
 		#Make sure default html folder exists.  This will not be used.
 		mkdir -p #{DocumentRoot}/html
 		mkdir -p #{DocumentRoot}/#{SoftwareName}
@@ -60,11 +61,13 @@ script "install_software" do
 		mv solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
+		rm -Rf /root/solodev
 
 		service httpd start
 		if [ -f /etc/init.d/php72-php-fpm ]; then
 			service php72-php-fpm start
 		fi
+		
 	EOH
 end
 
