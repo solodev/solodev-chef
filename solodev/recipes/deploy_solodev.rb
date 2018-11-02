@@ -33,7 +33,6 @@ script "install_software" do
   user "root"
   cwd "/root"
   code <<-EOH
- 
 		#Make sure default html folder exists.  This will not be used.
 		mkdir -p #{DocumentRoot}/html
 		mkdir -p #{DocumentRoot}/#{SoftwareName}
@@ -44,7 +43,6 @@ script "install_software" do
 		aws s3 cp s3://solodev-release/$fn /root/solodev/Solodev.zip
 		cd /root/solodev
 		unzip Solodev.zip
-		rm -Rf Solodev.zip
 		
 		service httpd stop
 		if [ -f /etc/init.d/php72-php-fpm ]; then
@@ -61,13 +59,11 @@ script "install_software" do
 		mv Solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
-		rm -Rf /root/solodev
 
 		service httpd start
 		if [ -f /etc/init.d/php72-php-fpm ]; then
 			service php72-php-fpm start
 		fi
-		
 	EOH
 end
 
