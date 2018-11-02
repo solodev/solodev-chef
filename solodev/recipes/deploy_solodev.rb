@@ -40,7 +40,7 @@ script "install_software" do
 	
 		#Install Solodev CMS
 		mkdir -p /root/solodev
-		fn="$(aws s3 ls s3://solodev-release | sort | tail -n 1 | awk '{print \$4}')"
+		fn="$(aws s3 ls s3://solodev-release | sort | tail -n 1 | awk '{print $4}')"
 		aws s3 cp s3://solodev-release/$fn /root/solodev/Solodev.zip
 		cd /root/solodev
 		unzip Solodev.zip
