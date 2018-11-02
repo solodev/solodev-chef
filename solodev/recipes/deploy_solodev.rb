@@ -61,6 +61,7 @@ script "install_software" do
 		mv solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
+		mv solodev/license.txt #{DocumentRoot}/#{SoftwareName}/
 		rm -Rf /root/solodev
 
 		service httpd start
