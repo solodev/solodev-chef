@@ -63,6 +63,10 @@ script "install_software" do
 		mv Solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
 		mv Solodev/node_modules_global #{DocumentRoot}/#{SoftwareName}/
 		rm -Rf /root/solodev
+
+		npm config set prefix #{DocumentRoot}/#{SoftwareName}/node_modules_global
+		echo "export NODE_PATH=#{DocumentRoot}/#{SoftwareName}/node_modules_global/lib/node_modules" >>  "#{DocumentRoot}/#{SoftwareName}/node_modules_global/.npmrc"
+		echo "export PATH=$PATH:#{DocumentRoot}/#{SoftwareName}/node_modules_global/bin" >>  "#{DocumentRoot}/#{SoftwareName}/node_modules_global/.npmrc"
 		
 		service httpd start
 		if [ -f /etc/init.d/php72-php-fpm ]; then
