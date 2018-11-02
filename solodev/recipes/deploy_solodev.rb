@@ -43,6 +43,7 @@ script "install_software" do
 		aws s3 cp s3://solodev-release/$fn /root/solodev/Solodev.zip
 		cd /root/solodev
 		unzip Solodev.zip
+		rm -Rf Solodev.zip
 		
 		service httpd stop
 		if [ -f /etc/init.d/php72-php-fpm ]; then
@@ -50,15 +51,15 @@ script "install_software" do
 		fi
 
 		cd ..
-		chown -Rf apache.apache Solodev
-		chmod -Rf 2770 Solodev
-		mv Solodev/modules #{DocumentRoot}/#{SoftwareName}/
-		mv Solodev/core #{DocumentRoot}/#{SoftwareName}/
-		mv Solodev/vendor #{DocumentRoot}/#{SoftwareName}/
-		mv Solodev/public #{DocumentRoot}/#{SoftwareName}/
-		mv Solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
-		mv Solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
-		mv Solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
+		chown -Rf apache.apache solodev
+		chmod -Rf 2770 solodev
+		mv solodev/modules #{DocumentRoot}/#{SoftwareName}/
+		mv solodev/core #{DocumentRoot}/#{SoftwareName}/
+		mv solodev/vendor #{DocumentRoot}/#{SoftwareName}/
+		mv solodev/public #{DocumentRoot}/#{SoftwareName}/
+		mv solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
+		mv solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
+		mv solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
 
 		service httpd start
 		if [ -f /etc/init.d/php72-php-fpm ]; then
