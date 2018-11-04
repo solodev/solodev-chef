@@ -67,11 +67,6 @@ if ($restarttime) {
 
   if ($restart_now) {
     print("Restarting Apache....");
-    //exec('/etc/init.d/httpd restart');
-    //Need code to test if fails..
-    //If the above did not work with you then try this
-    //exec('for i in `lsof -i :80 | grep http | awk {' print $2'}`; do kill -9 $i; done');
-    //Then perform the restart:
     exec('/usr/bin/sudo /sbin/service httpd graceful');
   }
 }
