@@ -40,7 +40,7 @@ script "install_JWT" do
 	  chown -Rf apache.apache #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt
 	  chmod -Rf 2770 #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt
 		  
-	  EOH
+	EOH
 end
 
 #Install Software
