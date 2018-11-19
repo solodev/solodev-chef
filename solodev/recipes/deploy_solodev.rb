@@ -65,13 +65,6 @@ script "install_software" do
 		mv solodev/license.txt #{DocumentRoot}/#{SoftwareName}/
 		rm -Rf /root/solodev
 
-		#Add PEM
-		mkdir -p #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt
-		openssl genrsa -passout pass:ocoa -out #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt/private.pem 4096
-		openssl rsa -pubout -passin pass:ocoa -in #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt/private.pem -out #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt/public.pem
-		chown -Rf apache.apache #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt
-		chmod -Rf 2770 #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt
-
 		service httpd start
 		if [ -f /etc/init.d/php72-php-fpm ]; then
 			service php72-php-fpm start
