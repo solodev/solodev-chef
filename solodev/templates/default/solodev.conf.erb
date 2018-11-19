@@ -1,10 +1,9 @@
 <Directory "<%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>">
 Options FollowSymLinks
-#AllowOverride None
 AllowOverride All
 Order allow,deny
 Allow from all
-ErrorDocument 403 /404
+DirectoryIndex app.php index.stml
 </Directory>
 
 <VirtualHost *:80>
