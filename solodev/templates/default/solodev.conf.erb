@@ -8,12 +8,15 @@
     DirectoryIndex app.php
 </Directory>
 
+<Directory "/var/www/solodev/public/www/CMS">
+    DirectoryIndex index.stml
+</Directory>
+
 <Directory "/var/www/solodev/clients">                                                                                                                                                                                                                                                            
     DirectoryIndex index.stml
 </Directory>
 
 <VirtualHost *:80>
-    DirectoryIndex app.php index.stml
     Alias /core <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/html_core
     Alias /CK <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www/node_modules/ckeditor-full
     Alias /api <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/api
