@@ -1,24 +1,23 @@
-<Directory "<%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>">
-Options FollowSymLinks -Indexes
-AllowOverride All
-Order allow,deny
-Allow from all
+<Directory "/var/www/solodev">
+    Options FollowSymLinks
+    AllowOverride All
+    Require all granted
 </Directory>
 
 <Directory "/var/www/solodev/public">
-DirectoryIndex app.php
+    DirectoryIndex app.php
 </Directory>
 
 <Directory "/var/www/solodev/clients">                                                                                                                                                                                                                                                            
-DirectoryIndex index.stml
+    DirectoryIndex index.stml
 </Directory>
 
 <VirtualHost *:80>
-DirectoryIndex app.php index.stml
-Alias /core <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/html_core
-Alias /CK <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www/node_modules/ckeditor-full
-Alias /api <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/api
-DocumentRoot <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www
+    DirectoryIndex app.php index.stml
+    Alias /core <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/html_core
+    Alias /CK <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www/node_modules/ckeditor-full
+    Alias /api <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/api
+    DocumentRoot <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www
 </VirtualHost>
 
 IncludeOptional <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/clients/<%= node[:install][:ClientName] %>/Vhosts/*.*
