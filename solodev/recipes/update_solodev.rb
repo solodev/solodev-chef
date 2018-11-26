@@ -20,3 +20,20 @@ script "update_software" do
 
     EOH
 end
+
+#Install JWT
+script "install_JWT" do
+	interpreter "bash"
+	user "root"
+	cwd "/root"
+	code <<-EOH
+   
+	  #Add PEM
+	  mkdir -p #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt
+	  openssl genrsa -passout pass:ocoa -out #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt/private.pem 256
+	  openssl rsa -pubout -passin pass:ocoa -in #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt/private.pem -out #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt/public.pem
+	  chown -Rf apache.apache #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt
+	  chmod -Rf 2770 #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt
+		  
+	EOH
+end
