@@ -63,6 +63,7 @@ script "install_software" do
 		mv solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/license.txt #{DocumentRoot}/#{SoftwareName}/
+		ln -s #{DocumentRoot}/#{SoftwareName} /var/www/Solodev
 		rm -Rf /root/solodev
 
 		service httpd start
