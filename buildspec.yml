@@ -20,4 +20,4 @@ phases:
       - ./package.sh
   post_build:
     commands:
-      - echo "Chef recipes packaged on `date`"
+      - echo "Chef recipes - packaged on `date`"
