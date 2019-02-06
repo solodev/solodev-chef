@@ -33,21 +33,3 @@ script "setup_scripts" do
 
   EOH
 end
-
-#Install restart.php
-template 'restart.php' do
-  path '/root/restart.php'
-  source 'restart.php.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-end
-
-#Install CMS Apache conf
-template 'solodev.conf' do
-  path ApacheConfDir+'/solodev.conf'
-  source 'solodev.conf.erb'
-  owner 'root'
-  group 'root'
-  mode 0644
-end
