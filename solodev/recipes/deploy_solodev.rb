@@ -6,6 +6,7 @@ SolodevTheme = node[:install][:SolodevTheme]
 SoftwareName = node[:install][:SoftwareName]
 ClientName = node[:install][:ClientName]
 EnterpriseMode = node[:install][:EnterpriseMode]
+# CMSVersion = node[:install][:CMSVersion]
 
 #Backup Software
 script "backup_software" do
@@ -22,6 +23,7 @@ script "backup_software" do
 		mv #{DocumentRoot}/#{SoftwareName}/composer.json #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/composer.lock #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/version.txt #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/license.txt #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/public #{DocumentRoot}/#{SoftwareName}/old/
 	EOH
 end
@@ -63,7 +65,7 @@ script "install_software" do
 		mv solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/license.txt #{DocumentRoot}/#{SoftwareName}/
-		ln -s #{DocumentRoot}/#{SoftwareName} /var/www/Solodev
+		ln -s #{DocumentRoot}/#{SoftwareName}
 		rm -Rf /root/solodev
 
 		service httpd start
