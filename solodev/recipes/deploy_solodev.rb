@@ -6,7 +6,7 @@ SolodevTheme = node[:install][:SolodevTheme]
 SoftwareName = node[:install][:SoftwareName]
 ClientName = node[:install][:ClientName]
 EnterpriseMode = node[:install][:EnterpriseMode]
-# CMSVersion = node[:install][:CMSVersion]
+CMSVersion = node[:install][:CMSVersion]
 
 #Backup Software
 script "backup_software" do
