@@ -18,22 +18,45 @@
     DirectoryIndex index.stml
 </Directory>
 
-<VirtualHost _default_:443>
+<% if node[:install][:ServerCerts] -%>
+<VirtualHost *:443>
+    SSLEngine on
+    SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM
+    ServerName <%= node[:install][:ServerName] %>
+    <% if node[:install][:ServerCerts] -%>
+    <%= node[:install][:ServerCerts] %>
+    <% end -%>
+    Alias /core <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/html_core
+    Alias /CK <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www/node_modules/ckeditor-full
+    Alias /api <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/api
+    DocumentRoot <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www
+</VirtualHost>
+<% end -%>
+
+<VirtualHost *:443>
     SSLEngine on
     SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM
     SSLCertificateFile <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/ssl/star_solodev_net.crt
     SSLCertificateKeyFile <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/ssl/star_solodev_net.key
     SSLCertificateChainFile <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/ssl/DigiCertCA.crt
-
+    ServerName <%= node[:install][:StackName] %>.solodev.net
     Alias /core <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/html_core
     Alias /CK <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www/node_modules/ckeditor-full
     Alias /api <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/api
     DocumentRoot <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www
 </VirtualHost>
 
-RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule (.*) https://%{SERVER_NAME}/$1 [R,L]
+<VirtualHost _default_:80>
+    ServerName <%= node[:install][:StackName] %>.solodev.net
+    Alias /core <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/html_core
+    Alias /CK <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www/node_modules/ckeditor-full
+    Alias /api <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/core/api
+    DocumentRoot <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www
+</VirtualHost>
+
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule (.*) https://%{SERVER_NAME}/$1 [R,L]
 
 IncludeOptional <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/clients/<%= node[:install][:ClientName] %>/Vhosts/*.*
 IncludeOptional <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/clients/<%= node[:install][:ClientName] %>/s.Vhosts/*.*
