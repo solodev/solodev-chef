@@ -47,7 +47,7 @@ script "install_software" do
 		if [ "#{CMSVersion}" = "" ]; then
 			file="$(aws s3 ls s3://solodev-release | sort | tail -n 1 | awk '{print \$4}')"
 		else
-			file="solodev-#{CMSVersion}.zip"
+			file="solodev-v#{CMSVersion}.zip"
 		fi
 		aws s3 cp s3://solodev-release/$file /root/solodev/Solodev.zip
 
