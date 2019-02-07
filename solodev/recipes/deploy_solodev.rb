@@ -30,20 +30,38 @@ end
 
 #Install Software
 script "install_software" do
-  only_if  { "#{EnterpriseMode}" == "True"}
-  interpreter "bash"
-  user "root"
-  cwd "/root"
-  code <<-EOH
- 
+	only_if  { "#{EnterpriseMode}" == "True"}
+	interpreter "bash"
+	user "root"
+	cwd "/root"
+	code <<-EOH
+   
 		#Make sure default html folder exists.  This will not be used.
 		mkdir -p #{DocumentRoot}/html
 		mkdir -p #{DocumentRoot}/#{SoftwareName}
 	
 		#Install Solodev CMS
 		mkdir -p /root/solodev
-		fn="$(aws s3 ls s3://solodev-release | sort | tail -n 1 | awk '{print \$4}')"
-		aws s3 cp s3://solodev-release/$fn /root/solodev/Solodev.zip
+
+		if [ "#{CMSVersion}" = "" ]; then
+			file="$(aws s3 ls s3://solodev-release | sort | tail -n 1 | awk '{print \$4}')"
+		else
+			file="solodev-#{CMSVersion}.zip"
+		fi
+		aws s3 cp s3://solodev-release/$file /root/solodev/Solodev.zip
+
+	EOH
+end
+		
+
+#Update Software
+script "update_software" do
+  only_if  { "#{EnterpriseMode}" == "True"}
+  interpreter "bash"
+  user "root"
+  cwd "/root"
+  code <<-EOH
+
 		cd /root/solodev
 		unzip Solodev.zip
 		rm -Rf Solodev.zip
