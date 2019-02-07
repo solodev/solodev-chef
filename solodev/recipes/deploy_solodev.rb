@@ -6,6 +6,7 @@ SolodevTheme = node[:install][:SolodevTheme]
 SoftwareName = node[:install][:SoftwareName]
 ClientName = node[:install][:ClientName]
 EnterpriseMode = node[:install][:EnterpriseMode]
+ApacheConfDir = node[:install][:ApacheConfDir]
 CMSVersion = node[:install][:CMSVersion]
 
 #Backup Software

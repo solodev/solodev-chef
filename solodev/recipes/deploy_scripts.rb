@@ -1,7 +1,6 @@
 AWSAccessKeyId = node[:install][:AWSAccessKeyId]
 AWSSecretKey = node[:install][:AWSSecretKey]
 InstallBucketName = node[:install][:InstallBucketName]
-ApacheConfDir = node[:install][:ApacheConfDir]
 
 #Install Software
 script "setup_scripts" do
