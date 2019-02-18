@@ -16,6 +16,35 @@
 
 <Directory "<%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/clients">                                                                                                                                                                                                                                                            
     DirectoryIndex index.stml
+    # CORE LEGACY REDIRECTS
+    Redirect 301 /core/portal/adminValidatePrereq.js https://cdn.solodev.com/portal/adminValidatePrereq.js
+    Redirect 301 /core/portal/pager-1.0.js https://cdn.solodev.com/portal/pager-1.0.js
+    Redirect 301 /core/portal/pager-api.js https://cdn.solodev.com/portal/pager-api.js
+    Redirect 301 /core/portal/underscore-min.js https://cdn.solodev.com/portal/underscore-min.js
+    Redirect 301 /core/portal/date-format.js https://cdn.solodev.com/portal/date-format.js
+    Redirect 301 /core/portal/images/solodev/icons/jpg.png https://cdn.solodev.com/portal/images/solodev/icons/jpg.png
+    Redirect 301 /core/portal/images/solodev/icons/pdf.png https://cdn.solodev.com/portal/images/solodev/icons/pdf.png
+    Redirect 301 /core/portal/images/solodev/icons/png.png https://cdn.solodev.com/portal/images/solodev/icons/png.png
+    Redirect 301 /core/portal/getEventDetails.js https://cdn.solodev.com/portal/getEventDetails.js
+    Redirect 301 /core/builder/js/jquery.validationEngine.js https://cdn.solodev.com/builder/js/jquery.validationEngine.js
+    Redirect 301 /core/builder/js/jquery.validationEngine-en.js https://cdn.solodev.com/builder/js/jquery.validationEngine-en.js
+    Redirect 301 /core/builder/css/validationEngine.jquery.css https://cdn.solodev.com/builder/css/validationEngine.jquery.css
+    Redirect 301 /core/analytics/ct.js https://cdn.solodev.com/analytics/ct.js
+
+    # ASSETS REDIRECTS
+    Redirect 301 /assets/portal/adminValidatePrereq.js https://cdn.solodev.com/portal/adminValidatePrereq.js
+    Redirect 301 /assets/portal/pager-1.0.js https://cdn.solodev.com/portal/pager-1.0.js
+    Redirect 301 /assets/portal/pager-api.js https://cdn.solodev.com/portal/pager-api.js
+    Redirect 301 /assets/portal/underscore-min.js https://cdn.solodev.com/portal/underscore-min.js
+    Redirect 301 /assets/portal/date-format.js https://cdn.solodev.com/portal/date-format.js
+    Redirect 301 /assets/portal/images/solodev/icons/jpg.png https://cdn.solodev.com/portal/images/solodev/icons/jpg.png
+    Redirect 301 /assets/portal/images/solodev/icons/pdf.png https://cdn.solodev.com/portal/images/solodev/icons/pdf.png
+    Redirect 301 /assets/portal/images/solodev/icons/png.png https://cdn.solodev.com/portal/images/solodev/icons/png.png
+    Redirect 301 /assets/portal/getEventDetails.js https://cdn.solodev.com/portal/getEventDetails.js
+    Redirect 301 /assets/builder/js/jquery.validationEngine.js https://cdn.solodev.com/builder/js/jquery.validationEngine.js
+    Redirect 301 /assets/builder/js/jquery.validationEngine-en.js https://cdn.solodev.com/builder/js/jquery.validationEngine-en.js
+    Redirect 301 /assets/builder/css/validationEngine.jquery.css https://cdn.solodev.com/builder/css/validationEngine.jquery.css
+    Redirect 301 /assets/analytics/ct.js https://cdn.solodev.com/analytics/ct.js
 </Directory>
 
 <% if node[:install][:ServerCerts] -%>
