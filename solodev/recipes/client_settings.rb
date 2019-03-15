@@ -11,5 +11,7 @@ template '.env' do
   )
   action :create
   source 'client.env.erb'
+  owner 'apache'
+  group 'apache'
   mode '0755'
 end
