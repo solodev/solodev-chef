@@ -77,7 +77,7 @@ script "install_duplicity" do
 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/restore.sh
 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /root/restore.sh
 		echo "export PASSPHRASE=iYJQC1nt/CL7W+vi+t12WmqXpcI=" >> /root/restore.sh
-		echo "duplicity --force -v8 restore s3+http://#{StackName}-#{ClientName}/backups/ #{mount_path}" >> /root/restore.sh
+		echo "duplicity --force -v8 restore s3+http://#{StackName}-#{ClientName}/backups/ #{mount_path} > /root/restore.log &" >> /root/restore.sh
 		echo "chmod -Rf 2770 #{mount_path}" >> /root/restore.sh
 		echo "chown -Rf apache.apache #{mount_path}" >> /root/restore.sh
 		echo "gunzip < #{mount_path}/dbdumps/#{DBName}.sql.gz | mysql -h #{DBHost} -u #{DBUser} -p#{DBPassword} #{DBName}" >> /root/restore.sh
@@ -85,10 +85,10 @@ script "install_duplicity" do
 		echo "mv #{mount_path}/Client_Settings.xml.bak #{mount_path}/Client_Settings.xml" >> /root/restore.sh
 
 		if((#{MongoHost} == "instance['private_ip']")); then
-			echo "mongorestore --host `mongo --quiet --eval \"db.isMaster()['primary']\"` #{mount_path}/mongodumps" >> /root/restore.sh
-			/root/heal_mongo.sh
+			echo "mongorestore --host `mongo --quiet --eval \"db.isMaster()['primary']\"` #{mount_path}/mongodumps > /root/restore.log &" >> /root/restore.sh
+			echo "/root/heal_mongo.sh > /root/restore.log &" >> /root/restore.sh
 		else
-			echo "mongorestore #{mount_path}/mongodumps" >> /root/restore.sh
+			echo "mongorestore #{mount_path}/mongodumps > /root/restore.log &" >> /root/restore.sh
 			echo "rm -Rf #{mount_path}/stackname.txt && rm -Rf #{mount_path}/mongohosts.txt" >> /root/restore.sh
 		fi
 
@@ -115,7 +115,10 @@ script "install_duplicity" do
 		(crontab -l 2>/dev/null; echo "30 13 * * * duply backup backup") | crontab -
 		(crontab -l 2>/dev/null; echo "30 3 * * 0 duply backup full_purge --force") | crontab -
 	
-		echo "duply backup backup" >> /root/backup.sh
+		echo "duply backup full > /root/backup.log &" >> /root/backup.sh
+		echo "duply backup cleanup --force > /root/backup.log &" >> /root/backup.sh
+		echo "duply backup status > /root/backup.log &" >> /root/backup.sh
+
 		chmod 700 /root/backup.sh		
 		
 	EOH
