@@ -85,7 +85,7 @@ script "install_duplicity" do
 		echo "mv #{mount_path}/Client_Settings.xml.bak #{mount_path}/Client_Settings.xml" >> /root/restore.sh
 
 		if((#{MongoHost} == "instance['private_ip']")); then
-			echo "mongorestore --host `mongo --quiet --eval \"db.isMaster()['primary']\"` #{mount_path}/mongodumps > /root/restore.log &" >> /root/restore.sh
+			echo "mongorestore --host \`mongo --quiet --eval \"db.isMaster()['primary']\"\` #{mount_path}/mongodumps > /root/restore.log &" >> /root/restore.sh
 			echo "/root/heal_mongo.sh > /root/restore.log &" >> /root/restore.sh
 		else
 			echo "mongorestore #{mount_path}/mongodumps > /root/restore.log &" >> /root/restore.sh
@@ -102,7 +102,7 @@ script "install_duplicity" do
 		echo "/root/dumpmysql.sh >/dev/null 2>&1" >> /etc/duply/backup/pre
 
 		if((#{MongoHost} == "instance['private_ip']")); then
-			echo "mongodump --host `mongo --quiet --eval \"db.isMaster()['primary']\"` --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
+			echo "mongodump --host \`mongo --quiet --eval \"db.isMaster()['primary']\"\` --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
 		else
 			echo "mongodump --out #{mount_path}/mongodumps >/dev/null 2>&1" >> /etc/duply/backup/pre
 		fi
