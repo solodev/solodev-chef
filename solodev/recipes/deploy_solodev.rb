@@ -120,6 +120,6 @@ script "restart_web" do
     code <<-EOH
 		mkdir -p #{DocumentRoot}/#{SoftwareName}/tmp
 		chmod 777 #{DocumentRoot}/#{SoftwareName}/tmp
-        /root/restart.php
+        php restart.php
     EOH
 end
