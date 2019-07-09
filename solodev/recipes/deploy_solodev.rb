@@ -120,6 +120,8 @@ script "restart_web" do
     code <<-EOH
 		mkdir -p #{DocumentRoot}/#{SoftwareName}/tmp
 		chmod 777 #{DocumentRoot}/#{SoftwareName}/tmp
-        php restart.php
+        if [ -f /etc/init.d/httpd ]; then
+            service httpd restart
+        fi
     EOH
 end
