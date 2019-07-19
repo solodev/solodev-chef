@@ -15,7 +15,7 @@
 </Directory>
 
 <Directory "<%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/clients">                                                                                                                                                                                                                                                            
-    DirectoryIndex index.stml
+    DirectoryIndex index.stml app.php
     # CORE LEGACY REDIRECTS
     Redirect 301 /core/portal/adminValidatePrereq.js https://cdn.solodev.com/portal/adminValidatePrereq.js
     Redirect 301 /core/portal/pager-1.0.js https://cdn.solodev.com/portal/pager-1.0.js
