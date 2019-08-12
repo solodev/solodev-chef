@@ -16,6 +16,11 @@ script "backup_software" do
 	user "root"
 	cwd "/root"
 	code <<-EOH
+		service httpd stop
+		if [ -f /etc/init.d/php72-php-fpm ]; then
+			service php72-php-fpm stop
+		fi
+
 		rm -Rf #{DocumentRoot}/#{SoftwareName}/old
 		mkdir "#{DocumentRoot}/#{SoftwareName}/old"
 		mv #{DocumentRoot}/#{SoftwareName}/modules #{DocumentRoot}/#{SoftwareName}/old/
@@ -26,6 +31,11 @@ script "backup_software" do
 		mv #{DocumentRoot}/#{SoftwareName}/version.txt #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/license.txt #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/public #{DocumentRoot}/#{SoftwareName}/old/
+
+		service httpd start
+		if [ -f /etc/init.d/php72-php-fpm ]; then
+			service php72-php-fpm start
+		fi
 	EOH
 end
 
