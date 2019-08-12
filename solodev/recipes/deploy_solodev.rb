@@ -9,36 +9,6 @@ EnterpriseMode = node[:install][:EnterpriseMode]
 ApacheConfDir = node[:install][:ApacheConfDir]
 CMSVersion = node[:install][:CMSVersion]
 
-#Backup Software
-script "backup_software" do
-	only_if  { ::File.exists?("#{DocumentRoot}/#{SoftwareName}/modules") && "#{EnterpriseMode}" == "True"}
-	interpreter "bash"
-	user "root"
-	cwd "/root"
-	code <<-EOH
-		service httpd stop
-		if [ -f /etc/init.d/php72-php-fpm ]; then
-			service php72-php-fpm stop
-		fi
-
-		rm -Rf #{DocumentRoot}/#{SoftwareName}/old
-		mkdir "#{DocumentRoot}/#{SoftwareName}/old"
-		mv #{DocumentRoot}/#{SoftwareName}/modules #{DocumentRoot}/#{SoftwareName}/old/
-		mv #{DocumentRoot}/#{SoftwareName}/core #{DocumentRoot}/#{SoftwareName}/old/
-		mv #{DocumentRoot}/#{SoftwareName}/vendor #{DocumentRoot}/#{SoftwareName}/old/
-		mv #{DocumentRoot}/#{SoftwareName}/composer.json #{DocumentRoot}/#{SoftwareName}/old/
-		mv #{DocumentRoot}/#{SoftwareName}/composer.lock #{DocumentRoot}/#{SoftwareName}/old/
-		mv #{DocumentRoot}/#{SoftwareName}/version.txt #{DocumentRoot}/#{SoftwareName}/old/
-		mv #{DocumentRoot}/#{SoftwareName}/license.txt #{DocumentRoot}/#{SoftwareName}/old/
-		mv #{DocumentRoot}/#{SoftwareName}/public #{DocumentRoot}/#{SoftwareName}/old/
-
-		service httpd start
-		if [ -f /etc/init.d/php72-php-fpm ]; then
-			service php72-php-fpm start
-		fi
-	EOH
-end
-
 #Install Software
 script "install_software" do
 	only_if  { "#{EnterpriseMode}" == "True"}
@@ -63,7 +33,31 @@ script "install_software" do
 
 	EOH
 end
-		
+
+#Backup Software
+script "backup_software" do
+	only_if  { ::File.exists?("#{DocumentRoot}/#{SoftwareName}/modules") && "#{EnterpriseMode}" == "True"}
+	interpreter "bash"
+	user "root"
+	cwd "/root"
+	code <<-EOH
+		service httpd stop
+		if [ -f /etc/init.d/php72-php-fpm ]; then
+			service php72-php-fpm stop
+		fi
+
+		rm -Rf #{DocumentRoot}/#{SoftwareName}/old
+		mkdir "#{DocumentRoot}/#{SoftwareName}/old"
+		mv #{DocumentRoot}/#{SoftwareName}/modules #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/core #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/vendor #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/composer.json #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/composer.lock #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/version.txt #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/license.txt #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/public #{DocumentRoot}/#{SoftwareName}/old/
+	EOH
+end	
 
 #Update Software
 script "update_software" do
@@ -76,11 +70,6 @@ script "update_software" do
 		cd /root/solodev
 		unzip Solodev.zip
 		rm -Rf Solodev.zip
-		
-		service httpd stop
-		if [ -f /etc/init.d/php72-php-fpm ]; then
-			service php72-php-fpm stop
-		fi
 
 		cd ..
 		chown -Rf apache.apache solodev
