@@ -85,12 +85,6 @@ script "update_software" do
 		mv solodev/license.txt #{DocumentRoot}/#{SoftwareName}/
 		ln -sf #{DocumentRoot}/#{SoftwareName} #{DocumentRoot}/Solodev
 		rm -Rf /root/solodev
-
-		service httpd start
-		if [ -f /etc/init.d/php72-php-fpm ]; then
-			service php72-php-fpm start
-		fi
-		
 	EOH
 end
 
@@ -119,8 +113,9 @@ script "restart_web" do
     code <<-EOH
 		mkdir -p #{DocumentRoot}/#{SoftwareName}/tmp
 		chmod 777 #{DocumentRoot}/#{SoftwareName}/tmp
-        # if [ -f /etc/init.d/httpd ]; then
-        #     service httpd restart
-        # fi
+		service httpd start
+		if [ -f /etc/init.d/php72-php-fpm ]; then
+			service php72-php-fpm start
+		fi
     EOH
 end
