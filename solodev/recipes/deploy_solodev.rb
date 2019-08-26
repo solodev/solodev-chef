@@ -82,6 +82,7 @@ script "update_software" do
 		mv solodev/composer.json #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
+		mv solodev/license #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/license.txt #{DocumentRoot}/#{SoftwareName}/
 		ln -sf #{DocumentRoot}/#{SoftwareName} #{DocumentRoot}/Solodev
 		rm -Rf /root/solodev
