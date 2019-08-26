@@ -115,9 +115,12 @@ script "install_duplicity" do
 		(crontab -l 2>/dev/null; echo "30 13 * * * duply backup backup") | crontab -
 		(crontab -l 2>/dev/null; echo "30 3 * * 0 duply backup full_purge --force") | crontab -
 	
+		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/backup.sh
+		echo "sudo alternatives --set python /usr/bin/python2.6" >> /root/backup.sh
 		echo "duply backup full > /root/backup.log &" >> /root/backup.sh
 		echo "duply backup cleanup --force > /root/backup.log &" >> /root/backup.sh
 		echo "duply backup status > /root/backup.log &" >> /root/backup.sh
+		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /root/backup.sh
 
 		chmod 700 /root/backup.sh		
 		
