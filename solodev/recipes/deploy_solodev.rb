@@ -9,6 +9,18 @@ EnterpriseMode = node[:install][:EnterpriseMode]
 ApacheConfDir = node[:install][:ApacheConfDir]
 CMSVersion = node[:install][:CMSVersion]
 
+script "stop_web" do
+    interpreter "bash"
+    user "root"
+    cwd "/root"
+    code <<-EOH
+		service httpd stop
+		if [ -f /etc/init.d/php72-php-fpm ]; then
+			service php72-php-fpm stop
+		fi
+    EOH
+end
+
 #Install Software
 script "install_software" do
 	only_if  { "#{EnterpriseMode}" == "True"}
@@ -16,26 +28,17 @@ script "install_software" do
 	user "root"
 	cwd "/root"
 	code <<-EOH
-
-		service httpd stop
-		if [ -f /etc/init.d/php72-php-fpm ]; then
-			service php72-php-fpm stop
-		fi
-   
 		#Make sure default html folder exists.  This will not be used.
 		mkdir -p #{DocumentRoot}/html
 		mkdir -p #{DocumentRoot}/#{SoftwareName}
-	
 		#Install Solodev CMS
 		mkdir -p /root/solodev
-
 		if [ "#{CMSVersion}" = "" ]; then
 			file="$(aws s3 ls s3://solodev-release | sort | tail -n 1 | awk '{print \$4}')"
 		else
 			file="solodev-v#{CMSVersion}.zip"
 		fi
 		aws s3 cp s3://solodev-release/$file /root/solodev/Solodev.zip
-
 	EOH
 end
 
@@ -66,7 +69,6 @@ script "update_software" do
   user "root"
   cwd "/root"
   code <<-EOH
-
 		cd /root/solodev
 		unzip Solodev.zip
 		rm -Rf Solodev.zip
