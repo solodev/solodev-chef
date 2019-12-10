@@ -16,6 +16,11 @@ script "install_software" do
 	user "root"
 	cwd "/root"
 	code <<-EOH
+
+		service httpd stop
+		if [ -f /etc/init.d/php72-php-fpm ]; then
+			service php72-php-fpm stop
+		fi
    
 		#Make sure default html folder exists.  This will not be used.
 		mkdir -p #{DocumentRoot}/html
@@ -41,11 +46,6 @@ script "backup_software" do
 	user "root"
 	cwd "/root"
 	code <<-EOH
-		service httpd stop
-		if [ -f /etc/init.d/php72-php-fpm ]; then
-			service php72-php-fpm stop
-		fi
-
 		rm -Rf #{DocumentRoot}/#{SoftwareName}/old
 		mkdir "#{DocumentRoot}/#{SoftwareName}/old"
 		mv #{DocumentRoot}/#{SoftwareName}/modules #{DocumentRoot}/#{SoftwareName}/old/
