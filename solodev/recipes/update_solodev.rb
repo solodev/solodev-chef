@@ -5,22 +5,6 @@ SolodevWebsite = node[:install][:SolodevWebsite]
 SolodevTheme = node[:install][:SolodevTheme]
 SoftwareName = node[:install][:SoftwareName]
 
-#Update Software
-script "update_software" do
-    interpreter "bash"
-    user "apache"
-    group 'apache'
-    cwd "#{DocumentRoot}/#{SoftwareName}"
-    code <<-EOH
-
-        echo "php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}" >> #{DocumentRoot}/#{SoftwareName}/clients/solodev/phpinstall.log
-        php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}  >> #{DocumentRoot}/#{SoftwareName}/clients/solodev/phpinstall.log
-        cd #{DocumentRoot}/#{SoftwareName}/clients/solodev/Main
-        chmod -f 2770 *
-
-    EOH
-end
-
 #Install JWT
 script "install_JWT" do
 	interpreter "bash"
@@ -37,4 +21,20 @@ script "install_JWT" do
 	  chmod -Rf 2770 #{DocumentRoot}/#{SoftwareName}/clients/solodev/jwt
 		  
 	EOH
+end
+
+#Update Software
+script "update_software" do
+    interpreter "bash"
+    user "apache"
+    group 'apache'
+    cwd "#{DocumentRoot}/#{SoftwareName}"
+    code <<-EOH
+
+        echo "php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}" >> #{DocumentRoot}/#{SoftwareName}/clients/solodev/phpinstall.log
+        php #{DocumentRoot}/#{SoftwareName}/core/update.php #{SolodevUser} #{SolodevPassword}  >> #{DocumentRoot}/#{SoftwareName}/clients/solodev/phpinstall.log
+        cd #{DocumentRoot}/#{SoftwareName}/clients/solodev/Main
+        chmod -f 2770 *
+
+    EOH
 end
