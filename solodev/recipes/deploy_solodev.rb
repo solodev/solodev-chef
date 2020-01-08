@@ -21,6 +21,16 @@ script "stop_web" do
     EOH
 end
 
+#Update NPM
+script "update_npm" do
+    interpreter "bash"
+    user "root"
+    cwd "/root"
+    code <<-EOH
+		npm install --unsafe-perm -g node-sass
+    EOH
+end
+
 #Install Software
 script "install_software" do
 	only_if  { "#{EnterpriseMode}" == "True"}
