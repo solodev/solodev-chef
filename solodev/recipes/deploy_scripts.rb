@@ -16,7 +16,10 @@ script "setup_scripts" do
 		rm CloudWatchMonitoringScripts-v1.1.0.zip	
 		mkdir -p /root/aws-scripts-mon
 		echo AWSAccessKeyId=#{AWSAccessKeyId} >> /root/aws-scripts-mon/awscreds.template
-		echo AWSSecretKey=#{AWSSecretKey} >> /root/aws-scripts-mon/awscreds.template
+    echo AWSSecretKey=#{AWSSecretKey} >> /root/aws-scripts-mon/awscreds.template
+    
+    #Install SSM
+    yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
   	
 		#Create script to tune apache settings based on load
 		aws s3 cp s3://#{InstallBucketName}/tune_apache.sh /root/tune_apache.sh
