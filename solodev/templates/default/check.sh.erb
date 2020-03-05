@@ -13,24 +13,14 @@ function logOutput {
 
 function getVersion {
     unset LICENSE_SOFTWARE_VERSION
-    LICENSE_SOFTWARE_VERSION=$(cat /var/www/solodev/version.txt)
-    logOutput "Detected Solodev Version: $LICENSE_SOFTWARE_VERSION"
+    LICENSE_SOFTWARE_VERSION=$(cat "<%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/version.txt")
+    logOutput "Detected <%= node[:install][:SoftwareName] %> Version: $LICENSE_SOFTWARE_VERSION"
 }
 
 function getEnvVarData {
     echo -n '{"bash_license_script":"true"'
     printenv | while IFS='=' read n v; do
-        if [ "$n" = "UseMarketplace" ]; then
-             echo -n ",\"UseMarketplace\":\"${v}\""
-        elif [ "$n" = "PHP_VERSION" ]; then
-             echo -n ",\"phpVersion\":\"${v}\""
-        elif [ "$n" = "DB_USER" ]; then
-             echo -n ",\"dbUser\":\"${v}\""
-        elif [ "$n" = "TIDY_VERSION" ]; then
-             echo -n ",\"tidyVersion\":\"${v}\""
-        elif [ "$n" = "SOLODEV_USER" ]; then
-             echo -n ",\"solodevUser\":\"${v}\""
-        elif [ "$n" = "HOSTNAME" ]; then
+        if [ "$n" = "HOSTNAME" ]; then
              echo -n ",\"envHostname\":\"${v}\""
         fi
     done
@@ -40,28 +30,6 @@ function getEnvVarData {
 function getMachineInfo {
     metadata=$(getEnvVarData)
     metadata=$(echo "${metadata:1:-1}")
-    #Are we on EKS?
-    if [[ -z "$KUBERNETES_SERVICE_HOST" ]] || [ "$KUBERNETES_SERVICE_HOST" = "" ]; then
-        isEKS=0
-        logOutput "WE ARE NOT ON EKS"
-    else
-        isEKS=1
-        logOutput "WE ARE ON EKS"
-        kubernetesSet='"kubernetes":1'
-        metadata=$(echo "${metadata},${kubernetesSet}")
-    fi
-
-    #Are we on ECS?
-    ecsMetadata=$(cat /opt/ecs/metadata/*/ecs-container-metadata.json 2>/dev/null | tr -d '\040\011\012\015')
-    if [[ -z "$ecsMetadata" ]] || [ "$ecsMetadata" = "" ]; then
-        isECS=0
-        logOutput "WE ARE NOT ON ECS"
-    else
-        isECS=1
-        ecsMetadata=$(echo "${ecsMetadata:1:-1}")
-        metadata=$(echo "${metadata},${ecsMetadata}")
-        logOutput "WE ARE ON ECS"
-    fi
 
     ec2Metadata=$(curl http://169.254.169.254/latest/dynamic/instance-identity/document 2>/dev/null | tr -d '\040\011\012\015')
     if [[ -z "$ec2Metadata" ]] || [ "$ec2Metadata" = "" ]; then
@@ -76,36 +44,13 @@ function getMachineInfo {
     LICENSE_META_DATA=$(echo "{$metadata}")
 }
 
-function checkRegisterUsage {
-
-    unset LICENSE_SIGNATURE
-
-    ecsProductCode=c1fd55thkqaeyldi997b5sfc1
-    eksProductCode=qs1gkg4f9ex7lgmuh0sg5s42
-
-    if [ "${isECS}" = 1 ] || [ "${isEKS}" = 1 ]; then
-        if [ isECS = 1 ]; then
-            productCode=$ecsProductCode
-        else 
-            productCode=$eksProductCode
-        fi
-
-        signatureJson=$(aws meteringmarketplace register-usage --product-code $productCode --public-key-version 1 --region us-east-1 2>/dev/null)
-        signature=$(echo "$signatureJson" | grep -o '"Signature": "[^"]*' | grep -o '[^"]*$')
-        LICENSE_SIGNATURE=$signature
-    fi
-
-}
-
 
 function callLicenseServer {
     getVersion
     getMachineInfo
-    checkRegisterUsage
     
     local encodedMetadata=$(echo $LICENSE_META_DATA | php -r 'echo urlencode(fgets(STDIN));')
-
-    local licenseURL="https://license.solodev.org/authorize/?version=${LICENSE_SOFTWARE_VERSION}&signature=${LICENSE_SIGNATURE}&metadata=$encodedMetadata"
+    local licenseURL="https://<%= node[:install][:LicenseServer] %>/authorize/?version=${LICENSE_SOFTWARE_VERSION}&signature=${LICENSE_SIGNATURE}&metadata=$encodedMetadata"
     
     logOutput "LICENSE URL"
     logOutput "$licenseURL"
@@ -120,8 +65,8 @@ function callLicenseServer {
     local needle="LICENSE FILE DATA"
 
     if [ "${license}" != "${license/${needle}/}" ]; then
-        logOutput  "Writing license to /var/www/solodev/license.txt"
-        echo "$license" | sed 's/\\n/\n/g' > /var/www/solodev/license.txt
+        logOutput  "Writing license to <%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/license.txt"
+        echo "$license" | sed 's/\\n/\n/g' > "<%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/license.txt"
     else
         logOutput "License response did not contain valid license. Not writing to license file."
     fi
