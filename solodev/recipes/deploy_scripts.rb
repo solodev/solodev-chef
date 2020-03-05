@@ -11,9 +11,9 @@ script "setup_scripts" do
   code <<-EOH
 	
 		#Download and install monitoring scripts
-		wget http://ec2-downloads.s3.amazonaws.com/cloudwatch-samples/CloudWatchMonitoringScripts-v1.1.0.zip
-		unzip CloudWatchMonitoringScripts-v1.1.0.zip
-		rm CloudWatchMonitoringScripts-v1.1.0.zip	
+    wget http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip
+    unzip CloudWatchMonitoringScripts-1.2.1.zip
+    rm -f CloudWatchMonitoringScripts-1.2.1.zip
 		mkdir -p /root/aws-scripts-mon
 		echo AWSAccessKeyId=#{AWSAccessKeyId} >> /root/aws-scripts-mon/awscreds.template
     echo AWSSecretKey=#{AWSSecretKey} >> /root/aws-scripts-mon/awscreds.template
@@ -32,6 +32,7 @@ script "setup_scripts" do
     (crontab -l 2>/dev/null; echo "*/5 * * * * /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --disk-space-util --disk-path=/ --from-cron --auto-scaling") | crontab -
     (crontab -l 2>/dev/null; echo "0 1,13 * * * /root/tune_apache.sh") | crontab -
     (crontab -l 2>/dev/null; echo "*/2 * * * * php /root/restart.php") | crontab -
+    (crontab -l 2>/dev/null; echo "0,15,30,45 * * * * php /root/check.sh") | crontab -
 
   EOH
 end

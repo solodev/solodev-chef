@@ -119,6 +119,15 @@ template 'solodev.conf' do
 	mode 0644
 end
 
+#Install Check
+template 'check.sh' do
+	path '/root/check.sh'
+	source 'check.sh.erb'
+	owner 'root'
+	group 'root'
+	mode 0644
+end
+
 script "restart_web" do
     interpreter "bash"
     user "root"
