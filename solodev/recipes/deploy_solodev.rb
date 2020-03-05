@@ -124,7 +124,7 @@ template 'check.sh' do
 	source 'check.sh.erb'
 	owner 'root'
 	group 'root'
-	mode 0644
+	mode 0700
 end
 
 script "restart_web" do
