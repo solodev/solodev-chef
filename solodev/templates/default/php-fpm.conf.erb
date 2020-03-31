@@ -1,10 +1,5 @@
 [global]
 daemonize = yes
-php_admin_flag[log_errors] = on
-php_value[session.save_handler] = files
-php_value[session.save_path]    = /var/opt/remi/php72/lib/php/session
-php_value[soap.wsdl_cache_dir]  = /var/opt/remi/php72/lib/php/wsdlcache
-php_admin_value[error_log] = /var/opt/remi/php72/log/php-fpm/www-error.log
 slowlog = /var/opt/remi/php72/log/php-fpm/www-slow.log
 
 [www]
@@ -30,3 +25,9 @@ pm.max_children = 200
 security.limit_extensions = .php .stml .inc .tpl .pi .xml
 request_terminate_timeout = 0
 rlimit_core = unlimited
+
+php_admin_flag[log_errors] = on
+php_value[session.save_handler] = files
+php_value[session.save_path]    = /var/opt/remi/php72/lib/php/session
+php_value[soap.wsdl_cache_dir]  = /var/opt/remi/php72/lib/php/wsdlcache
+php_admin_value[error_log] = /var/opt/remi/php72/log/php-fpm/www-error.log
