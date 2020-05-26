@@ -50,7 +50,7 @@ function callLicenseServer {
     getMachineInfo
     
     local encodedMetadata=$(echo $LICENSE_META_DATA | php -r 'echo urlencode(fgets(STDIN));')
-    local licenseURL="https://<%= node[:install][:LicenseServer] %>/authorize/?version=${LICENSE_SOFTWARE_VERSION}&signature=${LICENSE_SIGNATURE}&metadata=$encodedMetadata"
+    local licenseURL="https://license.solodev.org/authorize/?version=${LICENSE_SOFTWARE_VERSION}&signature=${LICENSE_SIGNATURE}&metadata=$encodedMetadata"
     
     logOutput "LICENSE URL"
     logOutput "$licenseURL"
