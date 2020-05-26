@@ -41,3 +41,33 @@ directory DocumentRoot+'/'+SoftwareName+'/clients/'+ClientName+'/Main' do
   ignore_failure true
   action :create
 end
+
+directory DocumentRoot+'/'+SoftwareName+'/clients/'+ClientName+'/config' do
+	not_if do ::File.exists?("#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/config") end
+  owner 'apache'
+  group 'apache'
+  mode '0770'
+  recursive true
+  ignore_failure true
+  action :create
+end
+
+directory DocumentRoot+'/'+SoftwareName+'/clients/'+ClientName+'/apps' do
+	not_if do ::File.exists?("#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/apps") end
+  owner 'apache'
+  group 'apache'
+  mode '0770'
+  recursive true
+  ignore_failure true
+  action :create
+end
+
+directory DocumentRoot+'/'+SoftwareName+'/clients/'+ClientName+'/images' do
+	not_if do ::File.exists?("#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/images") end
+  owner 'apache'
+  group 'apache'
+  mode '0770'
+  recursive true
+  ignore_failure true
+  action :create
+end

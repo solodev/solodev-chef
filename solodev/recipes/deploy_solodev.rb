@@ -127,6 +127,15 @@ template 'check.sh' do
 	mode 0700
 end
 
+#Update PHP 
+template 'php-fpm.conf' do
+	path '/etc/opt/remi/php72/php-fpm.d/www.conf'
+	source 'php-fpm.conf.erb'
+	owner 'root'
+	group 'root'
+	mode 0700
+end
+
 script "restart_web" do
     interpreter "bash"
     user "root"
