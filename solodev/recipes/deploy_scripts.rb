@@ -10,7 +10,8 @@ script "setup_scripts" do
   cwd "/root"
   code <<-EOH
 	
-		#Download and install monitoring scripts
+    #Download and install monitoring scripts
+    yum install -y perl-Switch perl-DateTime perl-Sys-Syslog perl-LWP-Protocol-https perl-Digest-SHA.x86_64
     wget http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip
     unzip CloudWatchMonitoringScripts-1.2.1.zip
     rm -f CloudWatchMonitoringScripts-1.2.1.zip
