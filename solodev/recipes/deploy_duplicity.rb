@@ -54,7 +54,7 @@ script "install_duplicity" do
 	code <<-EOH
 		
 		# Install Duplicy Filesystem Backups
-		yum install -y duplicity duply python-boto mysql --enablerepo=epel
+		yum install -y duplicity duply python-boto mysql python-devel --enablerepo=epel
 				
 		duply backup create
 		perl -pi -e 's/GPG_KEY/#GPG_KEY/g' /etc/duply/backup/conf
