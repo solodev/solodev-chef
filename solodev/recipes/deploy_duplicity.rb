@@ -68,7 +68,7 @@ script "install_duplicity" do
 		echo "MAX_FULL_BACKUPS='2'" >> /etc/duply/backup/conf
 		echo "MAX_FULLBKP_AGE=1W" >> /etc/duply/backup/conf
 		echo "VOLSIZE=100" >> /etc/duply/backup/conf
-		echo 'DUPL_PARAMS="$DUPL_PARAMS --volsize $VOLSIZE" --s3-use-new-style' >> /etc/duply/backup/conf
+		echo 'DUPL_PARAMS="$DUPL_PARAMS --volsize $VOLSIZE --s3-use-new-style"' >> /etc/duply/backup/conf
 		echo 'DUPL_PARAMS="$DUPL_PARAMS --full-if-older-than $MAX_FULLBKP_AGE"' >> /etc/duply/backup/conf
 				
 		# Restore Script
