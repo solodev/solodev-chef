@@ -117,9 +117,9 @@ script "install_duplicity" do
 	
 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/backup.sh
 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /root/backup.sh
-		echo "duply backup full > /root/backup.log &" >> /root/backup.sh
-		echo "duply backup cleanup --force > /root/backup.log &" >> /root/backup.sh
-		echo "duply backup status > /root/backup.log &" >> /root/backup.sh
+		echo "sudo duply backup full" >> /root/backup.sh
+		echo "sudo duply backup cleanup" >> /root/backup.sh
+		echo "sudo duply backup status" >> /root/backup.sh
 		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /root/backup.sh
 
 		chmod 700 /root/backup.sh		
