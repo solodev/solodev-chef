@@ -62,6 +62,7 @@ script "backup_software" do
 		rm -Rf #{DocumentRoot}/#{SoftwareName}/old
 		mkdir "#{DocumentRoot}/#{SoftwareName}/old"
 		mv #{DocumentRoot}/#{SoftwareName}/modules #{DocumentRoot}/#{SoftwareName}/old/
+		mv #{DocumentRoot}/#{SoftwareName}/connectors #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/core #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/vendor #{DocumentRoot}/#{SoftwareName}/old/
 		mv #{DocumentRoot}/#{SoftwareName}/composer.json #{DocumentRoot}/#{SoftwareName}/old/
@@ -87,6 +88,7 @@ script "update_software" do
 		chown -Rf apache.apache solodev
 		chmod -Rf 2770 solodev
 		mv solodev/modules #{DocumentRoot}/#{SoftwareName}/
+		mv solodev/connectors #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/core #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/vendor #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/public #{DocumentRoot}/#{SoftwareName}/
