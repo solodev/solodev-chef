@@ -4,6 +4,7 @@ ClientName = node[:install][:ClientName]
 MongoHost = node[:install][:MongoHost]
 ClientId = node[:install][:ClientId]
 ClientSecret = node[:install][:ClientSecret]
+StackName = node[:install][:StackName]
 
 template '.env' do
 	not_if { ::File.exists?("#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/.env") }
@@ -11,7 +12,8 @@ template '.env' do
   variables( 
     MongoHost: "#{MongoHost}",
     ClientId: "#{ClientId}",
-    ClientSecret: "#{ClientSecret}"
+    ClientSecret: "#{ClientSecret}",
+    StackName: "#{StackName}",
   )
   action :create
   source 'client.env.erb'
