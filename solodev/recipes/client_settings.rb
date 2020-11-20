@@ -2,14 +2,16 @@ DocumentRoot = node[:install][:DocumentRoot]
 SoftwareName = node[:install][:SoftwareName]
 ClientName = node[:install][:ClientName]
 MongoHost = node[:install][:MongoHost]
-SSOEnabled = node[:install][:SSOEnabled]
+ClientId = node[:install][:ClientId]
+ClientSecret = node[:install][:ClientSecret]
 
 template '.env' do
 	not_if { ::File.exists?("#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/.env") }
   path "#{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/.env"
   variables( 
     MongoHost: "#{MongoHost}",
-    SSOEnabled: "#{SSOEnabled}"
+    ClientId: "#{ClientId}",
+    ClientSecret: "#{ClientSecret}"
   )
   action :create
   source 'client.env.erb'
