@@ -15,8 +15,13 @@ pm = dynamic
 pm.start_servers = 5
 pm.min_spare_servers = 5
 pm.max_spare_servers = 35
+<% if node["opsworks"]["instance"]["instance_type"].include?  "large" -%>
+pm.max_requests = 1000
+pm.max_children = 400
+<% else -%>
 pm.max_requests = 500
 pm.max_children = 200
+<% end -%>
 
 security.limit_extensions = .php .stml .inc .tpl .pi .xml
 request_terminate_timeout = 0
