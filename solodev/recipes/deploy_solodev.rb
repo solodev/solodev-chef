@@ -138,6 +138,15 @@ template 'php-fpm.conf' do
 	mode 0700
 end
 
+#Update PHP.INI
+template 'php.ini' do
+	path '/etc/opt/remi/php72/php.ini'
+	source 'php.ini.erb'
+	owner 'root'
+	group 'root'
+	mode 0700
+end
+
 script "restart_web" do
     interpreter "bash"
     user "root"
