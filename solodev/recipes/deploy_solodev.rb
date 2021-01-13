@@ -144,7 +144,7 @@ template 'php.ini' do
 	source 'php.ini.erb'
 	owner 'root'
 	group 'root'
-	mode 0700
+	mode 0644
 end
 
 script "restart_web" do
