@@ -1702,7 +1702,7 @@ date.timezone = UTC
 realpath_cache_size = 1M
 <% if node[:install][:RedisHost] and node[:install][:RedisHost]!='' -%>
 session.save_handler = redis
-session.save_path = "tcp://<%= node[:install][:RedisHost] %>:6379:"
+session.save_path = "tcp://<%= node[:install][:RedisHost] %>:6379"
 <% else -%>
 session.save_handler = files
 session.save_path = "/var/opt/remi/php72/lib/php/session"
