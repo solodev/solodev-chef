@@ -21,6 +21,9 @@ script "setup_scripts" do
     
     #Install SSM
     yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+
+    #Install Redis PHP Extension
+    yum install php72-php-pecl-redis
   	
 		#Create script to tune apache settings based on load
 		aws s3 cp s3://#{InstallBucketName}/tune_apache.sh /root/tune_apache.sh
