@@ -1,5 +1,6 @@
 #!/bin/bash
 ls -al
+chef generate cookbook "solodev_opsworks"
 /opt/chef/embedded/bin/berks install
 /opt/chef/embedded/bin/berks package cookbooks.tar.gz
 ls -al
