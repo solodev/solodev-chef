@@ -1,5 +1,6 @@
 #!/bin/bash
 ls -al
+/opt/chef/embedded/bin/berks init
 /opt/chef/embedded/bin/berks package cookbooks.tar.gz
 ls -al
 aws s3 cp cookbooks.tar.gz s3://solodev-aws-ha
