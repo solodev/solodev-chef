@@ -1,0 +1,16 @@
+DEPENDENCIES
+  alb_support
+    path: alb_support
+  mongo
+    path: mongo
+  solodev
+    path: solodev
+  solodev_opsworks
+    path: .
+    metadata: true
+
+GRAPH
+  alb_support (0.0.0)
+  mongo (0.0.0)
+  solodev (0.0.0)
+  solodev_opsworks (0.0.0)
