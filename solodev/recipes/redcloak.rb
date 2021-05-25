@@ -9,6 +9,8 @@ script "redcloak" do
 	user "root"
 	cwd "/root"
 	code <<-EOH
+		echo "Start Redcloak"
         #{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}/redcloak.sh
+		echo "End Redcloak"
 	EOH
 end	
