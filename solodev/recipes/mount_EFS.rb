@@ -17,8 +17,8 @@ script "mount_client" do
 	yum -y nfs-utils
 	mkdir -p #{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}
 	
-	mount -t nfs4 -o nfsvers=4.1 $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).#{EFSHost}.efs.#{Region}.amazonaws.com:/ #{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}     
-	echo "$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).#{EFSHost}.efs.#{Region}.amazonaws.com:/ #{DocumentRoot}/#{SoftwareName}/clients/#{ClientName} nfs defaults 0 0" >> /etc/fstab
+	mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport $(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).#{EFSHost}.efs.#{Region}.amazonaws.com:/ #{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}     
+	echo "$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone).#{EFSHost}.efs.#{Region}.amazonaws.com:/ #{DocumentRoot}/#{SoftwareName}/clients/#{ClientName} nfs defaults,vers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport 0 0" >> /etc/fstab
 	
 	chown -f apache.apache #{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}
 	chmod -f 2770 #{DocumentRoot}/#{SoftwareName}/clients/#{ClientName}
