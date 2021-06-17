@@ -37,6 +37,7 @@ script "setup_scripts" do
     (crontab -l 2>/dev/null; echo "0 1,13 * * * /root/tune_apache.sh") | crontab -
     (crontab -l 2>/dev/null; echo "*/2 * * * * php /root/restart.php") | crontab -
     (crontab -l 2>/dev/null; echo "0,15,30,45 * * * * /root/check.sh") | crontab -
+    (crontab -l 2>/dev/null; echo "* * * * * aws cloudwatch put-metric-data --metric-name mongo-code –-namespace “Solodev” –value $(echo 'db.runCommand("ping").ok' | mongo localhost:27017/test –quiet)") | crontab -
 
   EOH
 end
