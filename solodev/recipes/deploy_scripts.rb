@@ -1,6 +1,13 @@
 AWSAccessKeyId = node[:install][:AWSAccessKeyId]
 AWSSecretKey = node[:install][:AWSSecretKey]
-InstallBucketName = node[:install][:InstallBucketName]
+
+template 'tune_apache.sh' do
+	path '/root/tune_apache.sh'
+	source 'tune_apache.sh.erb'
+	owner 'root'
+	group 'root'
+	mode 0700
+end
 
 #Install Software
 script "setup_scripts" do
@@ -9,7 +16,7 @@ script "setup_scripts" do
   user "root"
   cwd "/root"
   code <<-EOH
-	
+  
     #Download and install monitoring scripts
     yum install -y perl-Switch perl-DateTime perl-Sys-Syslog perl-LWP-Protocol-https perl-Digest-SHA.x86_64
     wget http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip
@@ -21,23 +28,12 @@ script "setup_scripts" do
     
     #Install SSM
     yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
-
-    #Install Redis PHP Extension
-    yum install php72-php-pecl-redis
-  	
-		#Create script to tune apache settings based on load
-		aws s3 cp s3://#{InstallBucketName}/tune_apache.sh /root/tune_apache.sh
-    chmod 700 /root/tune_apache.sh
-    sed -i 's/\r//' tune_apache.sh
-    ./root/tune_apache.sh
-    sleep 10
 		
 		#Set Crontab
     (crontab -l 2>/dev/null; echo "*/5 * * * * /root/aws-scripts-mon/mon-put-instance-data.pl --mem-util --disk-space-util --disk-path=/ --from-cron --auto-scaling") | crontab -
     (crontab -l 2>/dev/null; echo "0 1,13 * * * /root/tune_apache.sh") | crontab -
     (crontab -l 2>/dev/null; echo "*/2 * * * * php /root/restart.php") | crontab -
     (crontab -l 2>/dev/null; echo "0,15,30,45 * * * * /root/check.sh") | crontab -
-    (crontab -l 2>/dev/null; echo "* * * * * aws cloudwatch put-metric-data --metric-name mongo-code –-namespace “Solodev” –value $(echo 'db.runCommand("ping").ok' | mongo localhost:27017/test –quiet)") | crontab -
-
+  
   EOH
 end
