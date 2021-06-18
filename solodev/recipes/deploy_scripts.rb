@@ -11,13 +11,14 @@ end
 
 #Install Software
 script "setup_scripts" do
-	not_if { ::File.exists?("/root/tune_apache.sh") }
+	not_if { ::File.exists?("/root/init.txt") }
   interpreter "bash"
   user "root"
   cwd "/root"
   code <<-EOH
   
     #Download and install monitoring scripts
+    touch /root/init.txt
     yum install -y perl-Switch perl-DateTime perl-Sys-Syslog perl-LWP-Protocol-https perl-Digest-SHA.x86_64
     wget http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip
     unzip CloudWatchMonitoringScripts-1.2.1.zip
