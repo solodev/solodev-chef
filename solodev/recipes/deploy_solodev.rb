@@ -8,6 +8,18 @@ ClientName = node[:install][:ClientName]
 EnterpriseMode = node[:install][:EnterpriseMode]
 ApacheConfDir = node[:install][:ApacheConfDir]
 CMSVersion = node[:install][:CMSVersion]
+PHPVersion = "72"
+PHPVersionLong = "7.2"
+
+if File.exist?('/etc/init.d/php72-php-fpm'
+	node.set['PHPVersion'] = '72'
+	node.set['PHPVersionLong'] = '7.2'
+end
+
+if File.exist?('/etc/init.d/php74-php-fpm'
+	node.set['PHPVersion'] = '74'
+	node.set['PHPVersionLong'] = '7.4'
+end
 
 script "stop_web" do
     interpreter "bash"
@@ -15,8 +27,8 @@ script "stop_web" do
     cwd "/root"
     code <<-EOH
 		service httpd stop
-		if [ -f /etc/init.d/php72-php-fpm ]; then
-			service php72-php-fpm stop
+		if [ -f /etc/init.d/php#{PHPVersion}-php-fpm ]; then
+			service php#{PHPVersion}-php-fpm stop
 		fi
     EOH
 end
@@ -131,7 +143,7 @@ end
 
 #Update PHP 
 template 'php-fpm.conf' do
-	path '/etc/opt/remi/php72/php-fpm.d/www.conf'
+	path '/etc/opt/remi/php'+ node[:PHPVersion] +'/php-fpm.d/www.conf'
 	source 'php-fpm.conf.erb'
 	owner 'root'
 	group 'root'
@@ -140,7 +152,7 @@ end
 
 #Update PHP.INI
 template 'php.ini' do
-	path '/etc/opt/remi/php72/php.ini'
+	path '/etc/opt/remi/php'+ node[:PHPVersion] +'/php.ini'
 	source 'php.ini.erb'
 	owner 'root'
 	group 'root'
@@ -155,8 +167,8 @@ script "restart_web" do
 		mkdir -p #{DocumentRoot}/#{SoftwareName}/tmp
 		chmod 777 #{DocumentRoot}/#{SoftwareName}/tmp
 		service httpd start
-		if [ -f /etc/init.d/php72-php-fpm ]; then
-			service php72-php-fpm start
+		if [ -f /etc/init.d/php#{PHPVersion}-php-fpm ]; then
+			service php#{PHPVersion}-php-fpm start
 		fi
     EOH
 end
