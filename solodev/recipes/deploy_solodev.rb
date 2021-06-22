@@ -12,13 +12,13 @@ PHPVersion = "72"
 PHPVersionLong = "7.2"
 
 if File.exist?('/etc/init.d/php72-php-fpm')
-	PHPVersion = '72'
-	PHPVersionLong = '7.2'
+	node.override['PHPVersion'] = '72'
+	node.override['PHPVersionLong']  = '7.2'
 end
 
 if File.exist?('/etc/init.d/php74-php-fpm')
-	PHPVersion = '74'
-	PHPVersionLong = '7.4'
+	node.override['PHPVersion']  = '74'
+	node.override['PHPVersionLong'] = '7.4'
 end
 
 script "stop_web" do
