@@ -13,8 +13,8 @@ PHPVersionLong = "7.2"
 
 ruby_block "set_php72" do
 	block do
-		node.override['PHPVersion'] = '72'
-		node.override['PHPVersionLong']  = '7.2'
+		PHPVersion = '72'
+		PHPVersionLong  = '7.2'
 	end
 	action :run
 	only_if { ::File.exist?('/etc/init.d/php72-php-fpm') }
@@ -22,8 +22,8 @@ end
 
 ruby_block "set_php74" do
 	block do
-		node.override['PHPVersion']  = '74'
-		node.override['PHPVersionLong'] = '7.4'
+		PHPVersion  = '74'
+		PHPVersionLong = '7.4'
 	end
 	action :run
 	only_if { ::File.exist?('/etc/init.d/php74-php-fpm') }
