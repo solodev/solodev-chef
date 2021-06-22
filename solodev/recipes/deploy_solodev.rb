@@ -12,13 +12,13 @@ PHPVersion = "72"
 PHPVersionLong = "7.2"
 
 if File.exist?('/etc/init.d/php72-php-fpm')
-	node.set['PHPVersion'] = '72'
-	node.set['PHPVersionLong'] = '7.2'
+	PHPVersion = '72'
+	PHPVersionLong = '7.2'
 end
 
 if File.exist?('/etc/init.d/php74-php-fpm')
-	node.set['PHPVersion'] = '74'
-	node.set['PHPVersionLong'] = '7.4'
+	PHPVersion = '74'
+	PHPVersionLong = '7.4'
 end
 
 script "stop_web" do
@@ -143,7 +143,7 @@ end
 
 #Update PHP 
 template 'php-fpm.conf' do
-	path '/etc/opt/remi/php'+ PHPVersion +'/php-fpm.d/www.conf'
+	path "/etc/opt/remi/php#{PHPVersion}/php-fpm.d/www.conf"
 	source 'php-fpm.conf.erb'
 	owner 'root'
 	group 'root'
@@ -152,7 +152,7 @@ end
 
 #Update PHP.INI
 template 'php.ini' do
-	path '/etc/opt/remi/php'+ PHPVersion +'/php.ini'
+	path "/etc/opt/remi/php#{PHPVersion}/php.ini"
 	source 'php.ini.erb'
 	owner 'root'
 	group 'root'
