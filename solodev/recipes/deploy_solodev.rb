@@ -11,14 +11,22 @@ CMSVersion = node[:install][:CMSVersion]
 PHPVersion = "72"
 PHPVersionLong = "7.2"
 
-if File.exist?('/etc/init.d/php72-php-fpm')
-	node.override['PHPVersion'] = '72'
-	node.override['PHPVersionLong']  = '7.2'
+script "set_php72" do
+	block do
+		node.override['PHPVersion'] = '72'
+		node.override['PHPVersionLong']  = '7.2'
+	end
+	action :run
+	only_if { ::File.exist?('/etc/init.d/php72-php-fpm') }
 end
 
-if File.exist?('/etc/init.d/php74-php-fpm')
-	node.override['PHPVersion']  = '74'
-	node.override['PHPVersionLong'] = '7.4'
+script "set_php74" do
+	block do
+		node.override['PHPVersion']  = '74'
+		node.override['PHPVersionLong'] = '7.4'
+	end
+	action :run
+	only_if { ::File.exist?('/etc/init.d/php74-php-fpm') }
 end
 
 script "stop_web" do
