@@ -143,7 +143,7 @@ end
 
 #Update PHP 
 template 'php-fpm.conf' do
-	path '/etc/opt/remi/php'+ node[:PHPVersion] +'/php-fpm.d/www.conf'
+	path '/etc/opt/remi/php'+ node['PHPVersion'] +'/php-fpm.d/www.conf'
 	source 'php-fpm.conf.erb'
 	owner 'root'
 	group 'root'
@@ -152,7 +152,7 @@ end
 
 #Update PHP.INI
 template 'php.ini' do
-	path '/etc/opt/remi/php'+ node[:PHPVersion] +'/php.ini'
+	path '/etc/opt/remi/php'+ node['PHPVersion'] +'/php.ini'
 	source 'php.ini.erb'
 	owner 'root'
 	group 'root'
