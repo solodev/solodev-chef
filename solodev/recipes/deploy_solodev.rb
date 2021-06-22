@@ -11,12 +11,12 @@ CMSVersion = node[:install][:CMSVersion]
 PHPVersion = "72"
 PHPVersionLong = "7.2"
 
-if File.exist?('/etc/init.d/php72-php-fpm'
+if File.exist?('/etc/init.d/php72-php-fpm')
 	node.set['PHPVersion'] = '72'
 	node.set['PHPVersionLong'] = '7.2'
 end
 
-if File.exist?('/etc/init.d/php74-php-fpm'
+if File.exist?('/etc/init.d/php74-php-fpm')
 	node.set['PHPVersion'] = '74'
 	node.set['PHPVersionLong'] = '7.4'
 end
