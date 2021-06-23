@@ -8,8 +8,8 @@ ClientName = node[:install][:ClientName]
 EnterpriseMode = node[:install][:EnterpriseMode]
 ApacheConfDir = node[:install][:ApacheConfDir]
 CMSVersion = node[:install][:CMSVersion]
-PHPVersion = "72"
-PHPVersionLong = "7.2"
+# PHPVersion = "72"
+# PHPVersionLong = "7.2"
 
 ruby_block "set_php72" do
 	block do
