@@ -139,6 +139,9 @@ end
 
 #Update PHP 
 template 'php-fpm.conf' do
+	variables(
+    	'PHPVersion': PHPVersion
+  	)
 	path "/etc/opt/remi/php#{PHPVersion}/php-fpm.d/www.conf"
 	source 'php-fpm.conf.erb'
 	owner 'root'
@@ -148,6 +151,10 @@ end
 
 #Update PHP.INI
 template 'php.ini' do
+	variables(
+    	'PHPVersion': PHPVersion,
+		'PHPVersionLong': PHPVersionLong
+  	)
 	path "/etc/opt/remi/php#{PHPVersion}/php.ini"
 	source 'php.ini.erb'
 	owner 'root'
