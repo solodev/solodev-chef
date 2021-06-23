@@ -26,7 +26,7 @@ ruby_block "set_php74" do
 		$PHPVersionLong = '7.4'
 	end
 	action :run
-	only_if { ::File.exist?('/etc/init.d/php74-php-fpm') }
+	only_if { ::File.exist?('/etc/opt/remi/php74/php-fpm.conf') }
 end
 
 script "stop_web" do
