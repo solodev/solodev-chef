@@ -8,25 +8,13 @@ ClientName = node[:install][:ClientName]
 EnterpriseMode = node[:install][:EnterpriseMode]
 ApacheConfDir = node[:install][:ApacheConfDir]
 CMSVersion = node[:install][:CMSVersion]
-# PHPVersion = "72"
-# PHPVersionLong = "7.2"
 
-ruby_block "set_php72" do
-	block do
-		PHPVersion = '72'
-		PHPVersionLong  = '7.2'
-	end
-	action :run
-	only_if { ::File.exist?('/etc/init.d/php72-php-fpm') }
-end
-
-ruby_block "set_php74" do
-	block do
-		PHPVersion  = '74'
-		PHPVersionLong = '7.4'
-	end
-	action :run
-	only_if { ::File.exist?('/etc/opt/remi/php74/php-fpm.conf') }
+if(File.exist?('/etc/opt/remi/php74/php-fpm.conf'))
+	PHPVersion  = '74'
+	PHPVersionLong = '7.4'
+else
+	PHPVersion = '72'
+	PHPVersionLong  = '7.2'
 end
 
 script "stop_web" do
