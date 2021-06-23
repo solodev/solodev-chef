@@ -1705,7 +1705,7 @@ session.save_handler = redis
 session.save_path = "tcp://<%= node[:install][:RedisHost] %>:6379"
 <% else -%>
 session.save_handler = files
-session.save_path = "/var/opt/remi/php<%= PHPVersion %>/lib/php/session"
+session.save_path = "/var/opt/remi/php<%= @PHPVersion %>/lib/php/session"
 <% end -%>
 session.gc_maxlifetime = 1200
 [apcu]
@@ -1722,4 +1722,4 @@ opcache.enable=1
 opcache.memory_consumption=128
 opcache.max_accelerated_files=4000
 opcache_revalidate_freq = 240
-zend_extension=/opt/remi/php<%= PHPVersion %>/root/usr/lib64/php/modules/ioncube_loader_lin_<%= PHPVersionLong %>.so
+zend_extension=/opt/remi/php<%= @PHPVersion %>/root/usr/lib64/php/modules/ioncube_loader_lin_<%= @PHPVersionLong %>.so
