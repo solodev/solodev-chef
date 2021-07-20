@@ -10,10 +10,6 @@
     DirectoryIndex app.php
 </Directory>
 
-<Directory "<%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/public/www/CMS">
-    DirectoryIndex index.stml
-</Directory>
-
 <Directory "<%= node[:install][:DocumentRoot] %>/<%= node[:install][:SoftwareName] %>/clients">                                                                                                                                                                                                                                                            
     DirectoryIndex index.stml app.php
     # CORE LEGACY REDIRECTS
