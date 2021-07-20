@@ -23,9 +23,7 @@ script "stop_web" do
     cwd "/root"
     code <<-EOH
 		service httpd stop
-		if [ -f /etc/init.d/php#{PHPVersion}-php-fpm ]; then
-			service php#{PHPVersion}-php-fpm stop
-		fi
+		service php#{PHPVersion}-php-fpm stop
     EOH
 end
 
@@ -170,8 +168,6 @@ script "restart_web" do
 		mkdir -p #{DocumentRoot}/#{SoftwareName}/tmp
 		chmod 777 #{DocumentRoot}/#{SoftwareName}/tmp
 		service httpd start
-		if [ -f /etc/init.d/php#{PHPVersion}-php-fpm ]; then
-			service php#{PHPVersion}-php-fpm start
-		fi
+		service php#{PHPVersion}-php-fpm start
     EOH
 end
