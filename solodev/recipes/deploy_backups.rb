@@ -2,9 +2,6 @@ VolumeName = node[:install][:VolumeName]
 StackName = node[:install][:StackName]
 Region = node[:install][:Region]
 DocumentRoot = node[:install][:DocumentRoot]
-AWSAccessKeyId = node[:install][:AWSAccessKeyId]
-AWSSecretKey = node[:install][:AWSSecretKey]
-RestoreBucketName = node[:install][:RestoreBucketName]
 InstallBucketName = node[:install][:InstallBucketName]
 DBName = node[:install][:DBName]
 DBHost = node[:install][:DBHost]
@@ -77,67 +74,4 @@ script "install_mongo" do
 	(crontab -l 2>/dev/null; echo "30 3 * * 1-6 /root/backupmongo.sh") | crontab -
 		
 	EOH
-end
-
-# script "install_duplicity" do
-# 	not_if { ::File.exists?("/root/restore.sh") }
-# 	interpreter "bash"
-# 	user "root"
-# 	cwd "/root"
-# 	code <<-EOH
-		
-# 		# Install Duplicy Filesystem Backups
-# 		yum install -y duplicity duply python-boto mysql python-devel --enablerepo=epel
-				
-# 		duply backup create
-# 		perl -pi -e 's/GPG_KEY/#GPG_KEY/g' /etc/duply/backup/conf
-# 		perl -pi -e 's/GPG_PW/#GPG_PW/g' /etc/duply/backup/conf
-# 		echo "GPG_PW='iYJQC1nt/CL7W+vi+t12WmqXpcI='" >> /etc/duply/backup/conf
-# 		echo "TARGET='s3+http://#{StackName}-#{ClientName}/backups'" >> /etc/duply/backup/conf
-# 		echo "TARGET_USER='#{AWSAccessKeyId}'" >> /etc/duply/backup/conf
-# 		echo "TARGET_PASS='#{AWSSecretKey}'" >> /etc/duply/backup/conf
-# 		echo "SOURCE='#{mount_path}'" >> /etc/duply/backup/conf
-# 		echo "MAX_AGE='1W'" >> /etc/duply/backup/conf
-# 		echo "MAX_FULL_BACKUPS='2'" >> /etc/duply/backup/conf
-# 		echo "MAX_FULLBKP_AGE=1W" >> /etc/duply/backup/conf
-# 		echo "VOLSIZE=100" >> /etc/duply/backup/conf
-# 		echo 'DUPL_PARAMS="$DUPL_PARAMS --volsize $VOLSIZE --s3-use-new-style"' >> /etc/duply/backup/conf
-# 		echo 'DUPL_PARAMS="$DUPL_PARAMS --full-if-older-than $MAX_FULLBKP_AGE"' >> /etc/duply/backup/conf
-				
-# 		# Restore Script
-# 		echo "#!/bin/bash" >> /root/restore.sh
-# 		echo "mv #{mount_path}/.env #{mount_path}/.env.bak" >> /root/restore.sh
-# 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/restore.sh
-# 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /root/restore.sh
-# 		echo "export PASSPHRASE=iYJQC1nt/CL7W+vi+t12WmqXpcI=" >> /root/restore.sh
-# 		echo "duplicity --force -v8 restore s3+http://#{StackName}-#{ClientName}/backups/ #{mount_path} > /root/restore.log" >> /root/restore.sh
-# 		echo "chmod -Rf 2770 #{mount_path}" >> /root/restore.sh
-# 		echo "chown -Rf apache.apache #{mount_path}" >> /root/restore.sh
-# 		echo "gunzip < #{mount_path}/dbdumps/#{DBName}.sql.gz | mysql -h #{DBHost} -u #{DBUser} -p#{DBPassword} #{DBName}" >> /root/restore.sh
-# 		echo "rm -f #{mount_path}/.env" >> /root/restore.sh
-# 		echo "mv #{mount_path}/.env.bak #{mount_path}/.env" >> /root/restore.sh
-
-# 		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /root/restore.sh
-# 		chmod 700 /root/restore.sh
-				
-# 		echo "/root/backupmysql.sh >/dev/null 2>&1" >> /etc/duply/backup/pre
-
-# 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /etc/duply/backup/pre
-# 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /etc/duply/backup/pre
-# 		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /etc/duply/backup/post
-
-# 		(crontab -l 2>/dev/null; echo "30 3 * * 1-6 duply backup backup") | crontab -
-# 		(crontab -l 2>/dev/null; echo "30 13 * * * duply backup backup") | crontab -
-# 		(crontab -l 2>/dev/null; echo "30 3 * * 0 duply backup full_purge --force") | crontab -
-	
-# 		echo "sudo alternatives --install /usr/bin/python  python /usr/bin/python2.6 1" >> /root/backup.sh
-# 		echo "sudo alternatives --set python /usr/bin/python2.6" >> /root/backup.sh
-# 		echo "sudo duply backup full" >> /root/backup.sh
-# 		echo "sudo duply backup cleanup" >> /root/backup.sh
-# 		echo "sudo duply backup status" >> /root/backup.sh
-# 		echo "sudo alternatives --remove python /usr/bin/python2.6" >> /root/backup.sh
-
-# 		chmod 700 /root/backup.sh		
-		
-# 	EOH
 end
