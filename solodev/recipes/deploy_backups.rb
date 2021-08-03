@@ -32,6 +32,7 @@ script "install_mysqldump" do
 		echo "# Remove old DBFILE" >> /root/backupmysql.sh
 		echo 'rm -f $DBFILE' >> /root/backupmysql.sh
 		echo "# Heavy Lifting" >> /root/backupmysql.sh
+		echo '/usr/bin/mysql -h #{DBHost} -u #{DBUser} -p#{DBPassword} mysql -Ns -e "GRANT BACKUP_ADMIN ON *.* TO \'root\'@\'%\'" >> /root/backupmysql.sh
 		echo '/usr/bin/mysql -h #{DBHost} -u #{DBUser} -p#{DBPassword} mysql -Ns -e "show databases" > $DBFILE' >> /root/backupmysql.sh
 		echo 'for i in `cat $DBFILE` ; do mysqldump --opt --single-transaction -h #{DBHost} -u #{DBUser} -p#{DBPassword} $i > $PWD/$i.sql ; done' >> /root/backupmysql.sh
 		echo "# Compress Backups" >> /root/backupmysql.sh
