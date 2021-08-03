@@ -55,10 +55,10 @@ script "install_mongo" do
 
 	touch /root/restoremongo.sh
 	if((#{MongoHost} == "instance['private_ip']")); then
-		echo "restoremongo --host \`mongo --quiet --eval \"db.isMaster()['primary']\"\` #{mount_path}/mongodumps > /root/restoremongo.log &" >> /root/restoremongo.sh
+		echo "mongo --host \`mongo --quiet --eval \"db.isMaster()['primary']\"\` #{mount_path}/mongodumps > /root/restoremongo.log &" >> /root/restoremongo.sh
 		echo "/root/heal_mongo.sh > /root/restore.log &" >> /root/restoremongo.sh
 	else
-		echo "restoremongo #{mount_path}/mongodumps > /root/restore.log &" >> /root/restoremongo.sh
+		echo "mongo #{mount_path}/mongodumps > /root/restore.log &" >> /root/restoremongo.sh
 		echo "rm -Rf #{mount_path}/stackname.txt && rm -Rf #{mount_path}/mongohosts.txt" >> /root/restoremongo.sh
 	fi
 
