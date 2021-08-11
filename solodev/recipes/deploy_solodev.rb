@@ -103,8 +103,9 @@ script "update_software" do
 		mv solodev/composer.lock #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/version.txt #{DocumentRoot}/#{SoftwareName}/
 		mv solodev/license.txt #{DocumentRoot}/#{SoftwareName}/
-		ln -sf #{DocumentRoot}/#{SoftwareName} #{DocumentRoot}/Solodev
 		rm -Rf /root/solodev
+		cd #{DocumentRoot}
+		ln -sf #{DocumentRoot}/#{SoftwareName} Solodev
 	EOH
 end
 
